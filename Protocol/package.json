@@ -1,0 +1,31 @@
+{
+  "name": "bondible",
+  "version": "1.0.0",
+  "description": "*This is a hackathon project, please be aware of this when using the project*",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harrymoy/Bondible.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harrymoy/Bondible/issues"
+  },
+  "homepage": "https://github.com/harrymoy/Bondible#readme",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "chai": "^4.3.4",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.4.2",
+    "hardhat": "^2.5.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.2.0",
+    "@uniswap/v2-core": "^1.0.1"
+  }
+}
