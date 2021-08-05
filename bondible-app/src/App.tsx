@@ -1,12 +1,12 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import BondForm from './components/BondForm';
+import Header from './components/Header';
+import Hero from './components/Hero';
 
 function App() {
   return (
     <div className="App">
-      <BondForm />
+      <Header />
+      <Hero />
     </div>
   );
 }
