@@ -3,9 +3,10 @@ pragma solidity ^0.8.0;
 
 import { IERC20 } from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
-enum BondState {Open, Closed}
-
 contract BondWallet {
+
+    enum BondState {Open, Closed}
+
     address payable public owner;
     address private bondFactory;
     uint public maxSubscription;

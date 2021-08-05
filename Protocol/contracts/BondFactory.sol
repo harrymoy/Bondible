@@ -2,10 +2,18 @@
 pragma solidity ^0.8.0;
 
 import { IERC20 } from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
-
-import {Bond, Subscriber} from './Types.sol';
 import {BondWallet} from './BondWallet.sol';
 
+struct Bond {
+        BondWallet bondWallet;
+        uint bondId;
+}
+
+struct Subscriber {
+        address payable subscriber;
+        uint subscriptionValue;
+        uint availableBalance;
+ }
 
 contract BondFactory {
 
@@ -20,8 +28,8 @@ contract BondFactory {
     event BondStateChange(string _message);
     event SubscriptionChange(uint _subscription);
     
-    constructor(IERC20 _daiInstance) {
-        paymentToken = _daiInstance;
+    constructor(address _tokenAddress) {
+        paymentToken = IERC20(_tokenAddress);
     }
 
     function issueBond(uint _rate, uint _maxSubscription) public returns (address) {
