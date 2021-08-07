@@ -1,8 +1,7 @@
-import React, { createRef, Component } from 'react'
+import React from 'react'
 import { useState } from 'react'
 import CreateBond from '../helpers/CreateBond'
-import { ConnectMetaMask } from './ConnectMetaMask'
-import { ConnectToBondFactory } from '../helpers/ConnectToBondFactory'
+import ConnectBondFactory from '../helpers/ConnectBondFactory'
 import { Contract } from 'ethers'
 
 interface bondData {
@@ -15,16 +14,15 @@ function BondForm(props: bondData) {
   const [rateValue, setRateValue] = useState<string>('')
   const [descriptionValue, setDescriptionValue] = useState<string>('')
 
-  async function issueBond() {
+  function issueBond() {
     console.log('Creating bond')
     console.log('The max subscription is: ', subscriptionValue)
     console.log('The rate is: ', rateValue)
     console.log('The description is: ', descriptionValue)
-    ConnectMetaMask()
-    const bondFactoryContract: Contract = ConnectToBondFactory(
+    const bondFactoryContract: Contract = ConnectBondFactory(
       props.contractAddress,
     )
-    console.log(bondFactoryContract)
+
     CreateBond(
       parseInt(rateValue!),
       parseInt(subscriptionValue!),

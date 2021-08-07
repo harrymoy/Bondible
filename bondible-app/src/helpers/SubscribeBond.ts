@@ -1,5 +1,4 @@
-import { ethers, Contract } from 'ethers'
-import BondFactory from '../../../Protocol/abis/contracts/BondFactory.sol/BondFactory.json'
+import { Contract } from 'ethers'
 
 const SubscribeToBond = (
   bondId: number,
@@ -12,7 +11,8 @@ const SubscribeToBond = (
       (_bondId, msgSender, subscriptionValue) => {
         const bondId: number = _bondId.toNumber()
         console.log(bondId)
-        return bondId
+        console.log(msgSender)
+        console.log(subscriptionValue)
       },
     ),
   )
