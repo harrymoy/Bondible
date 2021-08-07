@@ -3,7 +3,7 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-const hre = require("hardhat");
+const hre = require('hardhat')
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -14,21 +14,16 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const Greeter = await hre.ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
-  const DaiInstance = await hre.ethers.getContractFactory("Dai");
-  const dai = await DaiInstance.deploy("5777")
-  const BondFactory = await hre.ethers.getContractFactory("BondFactory");
-  const bondFactory = await BondFactory.deploy(dai.address);
+  const DaiInstance = await hre.ethers.getContractFactory('Dai')
+  const dai = await DaiInstance.deploy('5777')
+  const BondFactory = await hre.ethers.getContractFactory('BondFactory')
+  const bondFactory = await BondFactory.deploy(dai.address)
 
-  await greeter.deployed();
-  await dai.deployed();
-  await bondFactory.deployed();
+  await dai.deployed()
+  await bondFactory.deployed()
 
-  console.log("Dai deployed to:", dai.address);
-  console.log("Greeter deployed to:", greeter.address);
-  console.log("Bond Factory deployed to:", bondFactory.address);
-
+  console.log('Dai deployed to:', dai.address)
+  console.log('Bond Factory deployed to:', bondFactory.address)
 }
 
 // We recommend this pattern to be able to use async/await everywhere
@@ -36,6 +31,6 @@ async function main() {
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+    console.error(error)
+    process.exit(1)
+  })

@@ -1,22 +1,19 @@
-import React from "react";
-import './Header.scss';
-import { ConnectMetaMask } from './ConnectMetaMask';
-
+import React from 'react'
+import './Header.scss'
 interface Props {
-    text?: string
+  text?: string
 }
 
 const Header: React.FC<Props> = () => {
-    //console.log(window.Infinity)
-    
-    return(
-        <nav>
-            <div className="container">
-                    <h1 className="logo">Bondible</h1>
-                    <button className="nav-btn" onClick={ConnectMetaMask}>Button</button>
-            </div>
-        </nav>
-    )
+  //console.log(window.Infinity)
+
+  return (
+    <nav>
+      <div className="container">
+        <h1 className="logo">Bondible</h1>
+      </div>
+    </nav>
+  )
 }
 
-export default Header;
+export default Header

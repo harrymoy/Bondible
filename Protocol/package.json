@@ -4,7 +4,10 @@
   "description": "*This is a hackathon project, please be aware of this when using the project*",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "serve": "npx hardhat node",
+    "deploy": "npx hardhat run scripts/sample-script.js --network localhost"
   },
   "repository": {
     "type": "git",
@@ -22,7 +25,8 @@
     "chai": "^4.3.4",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.4.2",
-    "hardhat": "^2.5.0"
+    "hardhat": "^2.5.0",
+    "hardhat-abi-exporter": "^2.2.1"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.2.0",
