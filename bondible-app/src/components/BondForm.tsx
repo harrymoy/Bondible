@@ -9,7 +9,7 @@ interface bondData {
   walletAddress?: string
 }
 
-function BondForm(props: bondData) {
+const BondForm = (props: bondData) => {
   const [subscriptionValue, setSubscriptionValue] = useState<string>('')
   const [rateValue, setRateValue] = useState<string>('')
   const [descriptionValue, setDescriptionValue] = useState<string>('')
@@ -31,7 +31,7 @@ function BondForm(props: bondData) {
   }
 
   return (
-    <form>
+    <form onSubmit={issueBond}>
       <label>Total Subscription Value</label>
       <input
         name="subscription"
@@ -66,7 +66,7 @@ function BondForm(props: bondData) {
         required
         placeholder="Enter a description about this bond"
       />
-      <input type="button" title="Submit" onClick={issueBond} />
+      <button type="submit">Submit</button>
     </form>
   )
 }
