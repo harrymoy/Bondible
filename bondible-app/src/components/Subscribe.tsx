@@ -20,29 +20,28 @@ interface subscription {
 
 const Subscribe = (props: subscription) => {
   const classes = useStyles()
-  const [bondId, setBondId] = useState<number>()
-  const [subscriptionAmount, setSubscriptionAmount] = useState<number>(0)
+  const [bondId, setBondId] = useState<number>(1)
+  const [subscriptionAmount, setSubscriptionAmount] = useState<
+    number | number[]
+  >(0)
   const [currentMaxSubscription, setCurrentMaxSubscription] = useState<number>(
     props.maxSubscription,
   )
 
   const handleSliderChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    newValue: number,
+    event: React.ChangeEvent<{}>,
+    newValue: number | number[],
   ) => {
     setSubscriptionAmount(newValue)
   }
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setSubscriptionAmount(parseInt(event.currentTarget.value))
+  const handleInputChange = (event: any) => {
+    setSubscriptionAmount(parseInt(event.target.value))
   }
 
   const handleMinMax = () => {
     if (subscriptionAmount < 0) {
       setSubscriptionAmount(0)
-    } else if (subscriptionAmount > props.maxSubscription) {
     }
   }
 
@@ -60,8 +59,9 @@ const Subscribe = (props: subscription) => {
     const bondFactoryContract: Contract = ConnectBondFactory(
       props.contractAddress,
     )
-
-    SubscribeBond(bondId!, subscriptionAmount!, bondFactoryContract)
+    if (typeof subscriptionAmount === 'number') {
+      SubscribeBond(bondId!, subscriptionAmount!, bondFactoryContract)
+    }
   }
 
   /** TO DO:
@@ -77,16 +77,11 @@ const Subscribe = (props: subscription) => {
   return (
     <div className={classes.root}>
       <Typography id="input-slider" gutterBottom>
-        Volume
+        Subscribe to bond.
       </Typography>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs>
           <Slider
-            value={
-              typeof setSubscriptionAmount === 'number'
-                ? setSubscriptionAmount
-                : 0
-            }
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
           />
@@ -94,7 +89,7 @@ const Subscribe = (props: subscription) => {
         <Grid item>
           <Input
             className={classes.input}
-            value={setSubscriptionAmount}
+            value={subscriptionAmount}
             margin="dense"
             onChange={handleInputChange}
             onBlur={handleMinMax}
@@ -111,3 +106,5 @@ const Subscribe = (props: subscription) => {
     </div>
   )
 }
+
+export default Subscribe
