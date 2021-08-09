@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createRef, Component } from 'react'
 import { useState } from 'react'
 import CreateBond from '../helpers/CreateBond'
 import ConnectBondFactory from '../helpers/ConnectBondFactory'
@@ -9,12 +9,12 @@ interface bondData {
   walletAddress?: string
 }
 
-const BondForm = (props: bondData) => {
+function BondForm(props: bondData) {
   const [subscriptionValue, setSubscriptionValue] = useState<string>('')
   const [rateValue, setRateValue] = useState<string>('')
   const [descriptionValue, setDescriptionValue] = useState<string>('')
 
-  function issueBond() {
+  async function issueBond() {
     console.log('Creating bond')
     console.log('The max subscription is: ', subscriptionValue)
     console.log('The rate is: ', rateValue)
@@ -22,7 +22,7 @@ const BondForm = (props: bondData) => {
     const bondFactoryContract: Contract = ConnectBondFactory(
       props.contractAddress,
     )
-
+    console.log(bondFactoryContract)
     CreateBond(
       parseInt(rateValue!),
       parseInt(subscriptionValue!),
@@ -31,7 +31,7 @@ const BondForm = (props: bondData) => {
   }
 
   return (
-    <form onSubmit={issueBond}>
+    <form>
       <label>Total Subscription Value</label>
       <input
         name="subscription"
@@ -66,7 +66,7 @@ const BondForm = (props: bondData) => {
         required
         placeholder="Enter a description about this bond"
       />
-      <button type="submit">Submit</button>
+      <input type="button" title="Submit" onClick={issueBond} />
     </form>
   )
 }

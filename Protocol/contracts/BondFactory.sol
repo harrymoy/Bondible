@@ -27,7 +27,6 @@ contract BondFactory {
     event Withdrawal(uint _bondId, address _subscriber, uint _amount);
     event BondStateChange(string _message);
     event SubscriptionChange(uint _subscription);
-    event BondQuery(uint _currentBalance, uint _maxSubscription, uint _rate);
     
     constructor(address _tokenAddress) {
         paymentToken = IERC20(_tokenAddress);
@@ -108,13 +107,5 @@ contract BondFactory {
         uint newMax = selectedBond.changeMaxSubscription(_amount);
         emit SubscriptionChange(newMax);
         return newMax;
-    }
-
-    function queryBondData(uint _bondId) public {
-        BondWallet selectedBond = bonds[_bondId];
-        uint bondCurrentBalance = selectedBond.getBalance();
-        uint bondMaxSubscription = selectedBond.maxSubscription();
-        uint bondCurrentRate = selectedBond.rate();
-        emit BondQuery(bondCurrentBalance, bondMaxSubscription, bondCurrentRate);
     }
 } 
