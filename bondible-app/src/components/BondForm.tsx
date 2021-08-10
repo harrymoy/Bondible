@@ -1,9 +1,7 @@
 import React, { createRef, Component } from 'react'
 import { useState } from 'react'
-import CreateBond from '../helpers/CreateBond'
 import ConnectBondFactory from '../helpers/ConnectBondFactory'
 import { Contract } from 'ethers'
-
 interface bondData {
   contractAddress: string
   walletAddress?: string
@@ -22,12 +20,16 @@ function BondForm(props: bondData) {
     const bondFactoryContract: Contract = ConnectBondFactory(
       props.contractAddress,
     )
-    console.log(bondFactoryContract)
-    CreateBond(
-      parseInt(rateValue!),
-      parseInt(subscriptionValue!),
-      bondFactoryContract,
-    )
+
+    bondFactoryContract.issueBond(rateValue!, subscriptionValue!)
+    bondFactoryContract.once('IssueBond', (_bondId) => {
+      const bondInfo: {} = {
+        bondId: parseInt(_bondId),
+        maxSubscription: subscriptionValue,
+        rate: rateValue,
+      }
+      console.log(bondInfo)
+    })
   }
 
   return (

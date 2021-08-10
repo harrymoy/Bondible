@@ -11,7 +11,7 @@ contract BondWallet {
     address private bondFactory;
     uint public maxSubscription;
     uint public rate;
-    uint private currentBalance;
+    uint public currentBalance;
     BondState private bondState;
     IERC20 paymentToken;
     
