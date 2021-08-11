@@ -1,13 +1,20 @@
 import './App.css'
 import MenuAppBar from './components/Header'
 import BondForm from './components/BondForm'
+import MainPage from './pages/MainPage'
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 function App() {
+
   return (
-    <div className="App">
+    <>
       <MenuAppBar />
-      <BondForm contractAddress="0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9" />
-    </div>
+      <Router>
+        <Route exact path="/" component={MainPage}/>
+        <Route/>
+        <Route/>
+      </Router>
+    </>
   )
 }
 
