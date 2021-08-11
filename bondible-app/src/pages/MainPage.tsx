@@ -17,34 +17,32 @@ const useStyles = makeStyles({
     }
   });
 
-  const MainPage: React.FC = (): any => {
-    const classes = useStyles();
+const MainPage: React.FC = () => {
+  const classes = useStyles();
 
-    const handleOnClick = (event: React.MouseEvent<HTMLAreaElement, MouseEvent>) => {
-        event.preventDefault();
-        console.log("You have clicked in the specified area")
-    }
+  const handleOnClick = (event: React.MouseEvent<HTMLAreaElement, MouseEvent>) => {
+      event.preventDefault();
+      console.log("You have clicked in the specified area")
+  }
 
-    // MAP WORKS, LINK TO ANOTHER PAGE NEEDS TO BE DONE - REACT ROUTER????
-
-    return (
-        <div className={classes.imgWrapper}>
-          <img src={homePage} alt="Home Page" useMap="#map" className={classes.img}></img>
-          <map name="map">
-            <area 
-              shape="rect" 
-              coords="76,14,162,449" 
-              alt="Create" 
-              href=""
-              onClick={handleOnClick}/>
-            <area
-              shape="rect"
-              coords="1207,13,1292,447"
-              alt="Browse"
-              href=""/>
-          </map>
-        </div>
-    )
+  return (
+      <div className={classes.imgWrapper}>
+        <img src={homePage} alt="Home Page" useMap="#map" className={classes.img}></img>
+        <map name="map">
+          <area 
+            shape="rect" 
+            coords="76,14,162,449" 
+            alt="Create" 
+            href=""
+            onClick={handleOnClick}/>
+          <area
+            shape="rect"
+            coords="1207,13,1292,447"
+            alt="Browse"
+            href=""/>
+        </map>
+      </div>
+  )
 }
 
 export default MainPage
