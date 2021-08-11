@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     }
   });
 
-const MainPage: React.FC = () => {
+const MainPage = () => {
   const classes = useStyles();
 
   const handleOnClick = (event: React.MouseEvent<HTMLAreaElement, MouseEvent>) => {
