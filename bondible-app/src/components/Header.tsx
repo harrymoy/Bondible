@@ -19,7 +19,9 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed'
   },
   icon: {
-    float: 'right'
+    align: 'right !important',
+    right: '30px',
+    position: 'absolute'
   }  
 }))
 
