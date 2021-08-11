@@ -9,41 +9,40 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import Logo from '../images/bondibleSmall.png'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    displayFlex: 1,
-  },
   img: {
     maxHeight: '100%',
     maxWidth: '100%'
   },
   toolbar: {
     height: 80,
-    backgroundColor: '#1F1B24'
+    backgroundColor: '#1F1B24',
+    position: 'fixed'
   },
-  hover: {
-    cursor: 'pointer'
-  }
+  icon: {
+    float: 'right'
+  }  
 }))
 
 const MenuAppBar: React.FC = (): any => {
   const classes = useStyles()
 
   return (
-    <div className={classes.toolbar}>
+    <div>
       <AppBar className={classes.toolbar} position="static">
         <Toolbar>
-        <img 
+        <img
           className={classes.img} 
           src={Logo} 
           alt="Bondible Logo"
         />
-        <IconButton
+          <IconButton
             edge="end"
             aria-label="MetaMask"
             aria-haspopup="true"
             color="inherit"
+            className={classes.icon}
           >
-            <AccountCircle />
+            <AccountCircle className={classes.icon}/>
           </IconButton>
         </Toolbar>
       </AppBar>
