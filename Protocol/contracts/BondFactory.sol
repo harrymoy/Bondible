@@ -150,7 +150,7 @@ contract BondFactory {
         emit SubscriptionChange(newMax);
         return newMax;
     }
-
+    
     /**
         Changes the rate if the user is the owner.
         @param _bondId: The Id for a specific bond.
