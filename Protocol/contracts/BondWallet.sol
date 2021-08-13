@@ -14,7 +14,7 @@ contract BondWallet {
     uint private currentBalance;
     BondState private bondState;
     IERC20 paymentToken;
-    
+
     constructor(address _owner, uint _maxSubscription, uint _rate, IERC20 _paymentToken) {
         owner = payable(_owner);
         bondFactory = msg.sender;
@@ -45,6 +45,10 @@ contract BondWallet {
         _;
     }
 
+    function getBalance() public view requireBondFactory() returns(uint) {
+        return currentBalance;
+    }
+
     function changeMaxSubscription(uint _amount) public requireBondFactory() requireBondClosed() returns(uint) {
         require (currentBalance < _amount, "You have too much in this bond already");
         maxSubscription = _amount;
@@ -56,13 +60,8 @@ contract BondWallet {
         return rate;
     }
 
-    function getBalance() public view requireBondFactory() returns(uint) {
-        return currentBalance;
-    }
-
-    function subscribeToBond(uint _subscriptionAmount) public payable requireBondFactory() requireBondOpen() {
-        paymentToken.approve(msg.sender, _subscriptionAmount);
-        paymentToken.transferFrom(msg.sender, address(this), _subscriptionAmount);
+    function subscribeToBond(uint _subscriptionAmount, address _subscriber) public payable requireBondFactory() requireBondOpen() {
+        paymentToken.transferFrom(_subscriber, address(this), _subscriptionAmount);
         currentBalance += _subscriptionAmount;
     }
 
@@ -70,11 +69,11 @@ contract BondWallet {
         paymentToken.transfer(_address, _amount);
     }
 
-    function closeBond(address _address) public  requireOwner(_address) requireBondFactory() requireBondOpen() {
+    function closeBond(address _address) public requireOwner(_address) requireBondFactory() requireBondOpen() {
         bondState = BondState.Closed;
     }
 
-    function openBond(address _address) public  requireOwner(_address) requireBondFactory() {
+    function openBond(address _address) public requireOwner(_address) requireBondFactory() {
         bondState = BondState.Open;
     }
 

@@ -23,6 +23,7 @@ contract BondFactory {
     event BondStateChange(string _message);
     event SubscriptionChange(uint _subscription);
     event BondQuery(uint _currentBalance, uint _maxSubscription, uint _rate);
+    event EmitAddressForApproval(address _bondAddress);
     
     constructor(address _tokenAddress) {
         paymentToken = IERC20(_tokenAddress);
@@ -36,8 +37,8 @@ contract BondFactory {
         return address(bond);
     }
     
-    function depositToFactory() public payable {
-        payable(address(this)).transfer(msg.value);
+    function emitAddress(address _address) private {
+        emit EmitAddressForApproval(_address);
     }
 
     function subscribeToBond(uint _bondId, uint _subscriptionAmount) public payable {
@@ -55,8 +56,8 @@ contract BondFactory {
             Subscriber memory subscriber = Subscriber(payable(msg.sender), subscriptionValue, 0);
             subscribers[_bondId][msg.sender] = subscriber;
         }
-        depositToFactory();
-        selectedBond.subscribeToBond(_subscriptionAmount);
+        emitAddress(address(selectedBond));
+        selectedBond.subscribeToBond(_subscriptionAmount, msg.sender);
         emit SubscribedToBond(_bondId, msg.sender, subscriptionValue);
     }
 
