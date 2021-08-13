@@ -18,7 +18,7 @@ contract BondFactory {
     IERC20 private paymentToken;
     
     event IssueBond (uint _bondId);
-    event SubscribedToBond(uint _bondId, address _subscriber, uint _subscriptionValue);
+    event SubscribedToBond(address _bond, address _subscriber, uint _subscriptionValue);
     event Withdrawal(uint _bondId, address _subscriber, uint _amount);
     event BondStateChange(string _message);
     event SubscriptionChange(uint _subscription);
@@ -58,7 +58,7 @@ contract BondFactory {
         }
         emitAddress(address(selectedBond));
         selectedBond.subscribeToBond(_subscriptionAmount, msg.sender);
-        emit SubscribedToBond(_bondId, msg.sender, subscriptionValue);
+        emit SubscribedToBond(address(selectedBond), msg.sender, subscriptionValue);
     }
 
     function withdraw(uint _bondId, uint _amount) public {
