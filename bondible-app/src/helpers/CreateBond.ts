@@ -1,5 +1,4 @@
 import { Contract } from 'ethers'
-
 const CreateBond = (
   rate: number,
   amount: number,
