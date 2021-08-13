@@ -1,15 +1,21 @@
-import React from 'react';
-import './App.css';
-import Header from './components/Header';
-import Hero from './components/Hero';
+import './App.css'
+import MenuAppBar from './components/Header'
+import MainPage from './pages/MainPage'
+import CreateBond from './pages/CreateBond';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 function App() {
+
   return (
-    <div className="App">
-      <Header />
-      <Hero />
-    </div>
-  );
+    <>
+      <Router>
+        <MenuAppBar />
+        <Route exact path="/" component={MainPage}/>
+        <Route exact path="/bondform" component={CreateBond}/>
+        <Route/>
+      </Router>
+    </>
+  )
 }
 
-export default App;
+export default App
