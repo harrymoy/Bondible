@@ -10,6 +10,7 @@ import {
 import { NavLink } from "react-router-dom";
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Logo from '../images/bondibleSmall.png'
+import {getUserWalletAddress, getUserChainId} from '../helpers/ConnectMetaMask'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,6 +35,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }) 
 )
 
+const callMetamask = async () => {
+  var wallet = await getUserWalletAddress();
+  var chainId = await getUserChainId();
+  return {wallet, chainId};
+}
+
 const MenuAppBar: React.FC = (): any => {
   const classes = useStyles()
 
@@ -57,6 +64,7 @@ const MenuAppBar: React.FC = (): any => {
             aria-haspopup="true"
             color="inherit"
             className={classes.icon}
+            onClick={() => {callMetamask()}}
           >
             <AccountCircle className={classes.icon}/>
           </IconButton>
