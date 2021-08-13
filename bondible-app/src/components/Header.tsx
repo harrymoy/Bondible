@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Logo from '../images/bondibleSmall.png'
+import {getUserWalletAddress, getUserChainId} from '../helpers/ConnectMetaMask'
 
 const useStyles = makeStyles((theme) => ({
   img: {
@@ -25,7 +26,13 @@ const useStyles = makeStyles((theme) => ({
   }  
 }))
 
-const MenuAppBar: React.FC = (): any => {
+const callMetamask = async () => {
+  var wallet = await getUserWalletAddress();
+  var chainId = await getUserChainId();
+  return {wallet, chainId};
+}
+
+const MenuAppBar = () => {
   const classes = useStyles()
 
   return (
@@ -43,6 +50,7 @@ const MenuAppBar: React.FC = (): any => {
             aria-haspopup="true"
             color="inherit"
             className={classes.icon}
+            onClick={() => {callMetamask()}}
           >
             <AccountCircle className={classes.icon}/>
           </IconButton>
