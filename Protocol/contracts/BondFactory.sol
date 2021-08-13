@@ -37,8 +37,9 @@ contract BondFactory {
         return address(bond);
     }
     
-    function emitAddress(address _address) private {
-        emit EmitAddressForApproval(_address);
+    function requestApprovalForBond(uint _bondId) public {
+        address bondAddress = bonds[_bondId];
+        emit EmitAddressForApproval(bondAddress);
     }
 
     function subscribeToBond(uint _bondId, uint _subscriptionAmount) public payable {
@@ -56,7 +57,7 @@ contract BondFactory {
             Subscriber memory subscriber = Subscriber(payable(msg.sender), subscriptionValue, 0);
             subscribers[_bondId][msg.sender] = subscriber;
         }
-        emitAddress(address(selectedBond));
+        
         selectedBond.subscribeToBond(_subscriptionAmount, msg.sender);
         emit SubscribedToBond(address(selectedBond), msg.sender, subscriptionValue);
     }
@@ -86,7 +87,7 @@ contract BondFactory {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         selectedBond.openBond(msg.sender);
         emit BondStateChange("Opened");
-    }
+    }   
 
     function deleteBond(uint _bondId) public {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
