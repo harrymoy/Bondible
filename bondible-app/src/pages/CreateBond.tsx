@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import BondForm from '../components/BondForm'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -13,7 +12,6 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: "0 auto"
     },
     form: {
-        ...theme.mixins.gutters(),
         paddingTop: theme.spacing(6),
         paddingBottom: theme.spacing(2),
         textAlign: 'center'
