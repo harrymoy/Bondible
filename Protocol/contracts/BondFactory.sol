@@ -10,6 +10,12 @@ struct Subscriber {
         uint availableBalance;
  }
 
+ /**
+    @title BondFactory
+    @author Harry Moy, Sam Clusker
+    @dev Contract used to create and call Bond Wallets
+    Copyright 2021 Harry Moy, Sam Clusker
+  */
 contract BondFactory {
 
     uint private bondCount = 1;
@@ -22,13 +28,24 @@ contract BondFactory {
     event Withdrawal(uint _bondId, address _subscriber, uint _amount);
     event BondStateChange(string _message);
     event SubscriptionChange(uint _subscription);
+    event RateChange(uint _newRate);
     event BondQuery(uint _currentBalance, uint _maxSubscription, uint _rate);
     event EmitAddressForApproval(address _bondAddress);
     
+
+    //Instantiate the contract with the Dai token address.
     constructor(address _tokenAddress) {
         paymentToken = IERC20(_tokenAddress);
     }
 
+                                                        ///////////////////////////////////// Function Calls /////////////////////////////////////
+
+    /**
+        Issue the bond and create a BondWallet contract.
+        @param _rate: The rate the bond is issued at.
+        @param _maxSubscription: The amount the user is looking to raise.
+        @return Returns the address of the issued bond.
+     */                                     
     function issueBond(uint _rate, uint _maxSubscription) public returns (address) {
         BondWallet bond = new BondWallet(msg.sender, _maxSubscription, _rate, paymentToken);
         bonds[bondCount] = address(bond);
@@ -36,12 +53,21 @@ contract BondFactory {
         emit IssueBond(bondCount);
         return address(bond);
     }
-    
+
+    /**
+        Emits the address for a selected bond so the .approve() can be called at Dai's address with the selected bond's address.
+        @param _bondId: The Id for a specific bond.
+     */    
     function requestApprovalForBond(uint _bondId) public {
         address bondAddress = bonds[_bondId];
         emit EmitAddressForApproval(bondAddress);
     }
 
+    /**
+        Subscribes a user to a selected bond. Performs checks that whether the user is already subscribed and if the amount they're subscribing is greater than max subscription.
+        @param _bondId: The Id for a specific bond.
+        @param _subscriptionAmount: The amount they want to subscribe with.
+     */    
     function subscribeToBond(uint _bondId, uint _subscriptionAmount) public payable {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         uint bondCurrentBalance = selectedBond.getBalance();
@@ -57,11 +83,16 @@ contract BondFactory {
             Subscriber memory subscriber = Subscriber(payable(msg.sender), subscriptionValue, 0);
             subscribers[_bondId][msg.sender] = subscriber;
         }
-        
+
         selectedBond.subscribeToBond(_subscriptionAmount, msg.sender);
         emit SubscribedToBond(address(selectedBond), msg.sender, subscriptionValue);
     }
 
+    /**
+        Checks if the user has sufficient funds to withdraw and withdraws that amount.
+        @param _bondId: The Id for a specific bond.
+        @param _amount: The amount they wish to withdraw.
+     */    
     function withdraw(uint _bondId, uint _amount) public {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         uint bondCurrentBalance = selectedBond.getBalance();
@@ -76,25 +107,43 @@ contract BondFactory {
         selectedBond.withdraw(_amount, msg.sender);
         emit Withdrawal(_bondId, msg.sender, _amount);
     }
-
+    
+    /**
+        Closes the bond so it cannot receive any more subscriptions if user is the owner.
+        @param _bondId: The Id for a specific bond.
+     */    
     function closeBond(uint _bondId) public {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         selectedBond.closeBond(msg.sender);
         emit BondStateChange("Closed");
     }
 
+    /**
+        Opens the bond so it can receive subscriptions if the user is the owner.
+        @param _bondId: The Id for a specific bond.
+     */
     function openBond(uint _bondId) public {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         selectedBond.openBond(msg.sender);
         emit BondStateChange("Opened");
-    }   
+    }
 
+    /**
+        Deletes the bond if the user is the owner.
+        @param _bondId: The Id for a specific bond.
+     */
     function deleteBond(uint _bondId) public {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         selectedBond.deleteBond(msg.sender);
         emit BondStateChange("Deleted");
     }
 
+    /**
+        Changes the maximum subscription if the user is the owner.
+        @param _bondId: The Id for a specific bond.
+        @param _amount: The amount they wish to change the max subscription to.
+        @return: The amount
+     */
     function changeMaxSubscription(uint _bondId, uint _amount) public returns(uint)  {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         uint newMax = selectedBond.changeMaxSubscription(_amount);
@@ -102,6 +151,23 @@ contract BondFactory {
         return newMax;
     }
 
+    /**
+        Changes the rate if the user is the owner.
+        @param _bondId: The Id for a specific bond.
+        @param _newRate: The new rate they wish to apply.
+        @return: The new rate.
+     */
+    function changeRate(uint _bondID, uint _newRate) public returns(uint) {
+        BondWallet selectedBOnd = BondWallet(bonds[_bondID]);
+        uint newRate = selectedBond.changeRate(_newRate);
+        emit RateChange(newRate);
+        return newRate;
+    }
+
+     /**
+        Queries the selected bond's data.
+        @param _bondId: The Id for a specific bond.
+     */
     function queryBondData(uint _bondId) public {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         uint bondCurrentBalance = selectedBond.getBalance();
