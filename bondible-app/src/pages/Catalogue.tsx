@@ -3,7 +3,6 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Contract, Wallet } from 'ethers'
-import ConnectBondFactory from '../helpers/ConnectBondFactory'
 import BondTile from '../components/BondTile'
 import { getUserWalletAddress } from '../helpers/ConnectMetaMask'
 import rootStyles from '../helpers/rootStyles';
