@@ -15,12 +15,50 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "_currentBalance",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_maxSubscription",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_rate",
+        "type": "uint256"
+      }
+    ],
+    "name": "BondQuery",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "string",
         "name": "_message",
         "type": "string"
       }
     ],
     "name": "BondStateChange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_bondAddress",
+        "type": "address"
+      }
+    ],
+    "name": "EmitAddressForApproval",
     "type": "event"
   },
   {
@@ -42,8 +80,21 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_bondId",
+        "name": "_newRate",
         "type": "uint256"
+      }
+    ],
+    "name": "RateChange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_bond",
+        "type": "address"
       },
       {
         "indexed": false,
@@ -103,19 +154,24 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "_bondId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "changeMaxSubscription",
+    "outputs": [
+      {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
     ],
-    "name": "bonds",
-    "outputs": [
-      {
-        "internalType": "contract BondWallet",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -127,11 +183,11 @@
       },
       {
         "internalType": "uint256",
-        "name": "_amount",
+        "name": "_newRate",
         "type": "uint256"
       }
     ],
-    "name": "changeMaxSubscription",
+    "name": "changeRate",
     "outputs": [
       {
         "internalType": "uint256",
@@ -169,32 +225,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "depositToFactory",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_bondId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getBondAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -227,6 +257,32 @@
       }
     ],
     "name": "openBond",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_bondId",
+        "type": "uint256"
+      }
+    ],
+    "name": "queryBondData",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_bondId",
+        "type": "uint256"
+      }
+    ],
+    "name": "requestApprovalForBond",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

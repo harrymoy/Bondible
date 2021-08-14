@@ -39,21 +39,22 @@ const MainPage = () => {
           <NavLink
             to="/bondform"
           >
-          <area 
-            shape="rect" 
-            coords="76,14,162,449" 
-            alt="Create" 
-            href=""
-          />
+            <area 
+              shape="rect" 
+              coords="76,14,162,449" 
+              alt="Create" 
+              href=""
+            />
           </NavLink>
           <NavLink
-            to="/"
+            to="/catalogue"
           >
-          <area
-            shape="rect"
-            coords="1207,13,1292,447"
-            alt="Browse"
-            href=""/>
+            <area
+              shape="rect"
+              coords="1207,13,1292,447"
+              alt="Browse"
+              href=""
+            />
           </NavLink>
         </map>
       </div>

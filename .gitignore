@@ -1,4 +1,3 @@
-.DS_Store
 # Logs
 logs
 *.log
@@ -110,3 +109,4 @@ node_modules
 cache
 artifacts
 .vscode/settings.json
+Protocol/abis/

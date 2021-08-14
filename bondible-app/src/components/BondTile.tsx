@@ -1,6 +1,6 @@
 import React from "react";
 import {Button} from "@material-ui/core";
-import Subscribe from "./Subscribe";
+import SubscriptionSlider from "./SubscriptionSlider";
 import { useState } from "react";
 
 interface BondTileProps {
@@ -33,7 +33,7 @@ const BondTile = (props: BondTileProps) => {
                         <p>Bond not available</p>
                     </div>
                 ) : (
-                    <Subscribe contractAddress={props.bondAddress!} maxSubscription={props.maxSubscription!} />
+                    <SubscriptionSlider maxSubscription={props.maxSubscription!} />
                 )}
                 </>
             )}
