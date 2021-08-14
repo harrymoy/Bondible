@@ -1,9 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
-import CreateBond from '../helpers/CreateBond'
-import ConnectBondFactory from '../helpers/ConnectBondFactory'
-import { Contract } from 'ethers'
 import { makeStyles, createStyles, Theme, FormControl, FormHelperText } from '@material-ui/core'
+import { issueBondHelper } from '../helpers/BondFactoryHelper'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,15 +57,7 @@ const BondForm = (props: bondData) => {
     console.log('The max subscription is: ', subscriptionValue)
     console.log('The rate is: ', rateValue)
     console.log('The description is: ', descriptionValue)
-    const bondFactoryContract: Contract = ConnectBondFactory(
-      props.contractAddress,
-    )
-    console.log(bondFactoryContract)
-    CreateBond(
-      parseInt(rateValue!),
-      parseInt(subscriptionValue!),
-      bondFactoryContract,
-    )
+    await issueBondHelper(props.contractAddress, parseInt(rateValue), parseInt(subscriptionValue));
   }
 
   return (

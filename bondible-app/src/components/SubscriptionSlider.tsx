@@ -1,7 +1,4 @@
 import React, { useState } from 'react'
-import { Contract } from 'ethers'
-import ConnectBondFactory from '../helpers/ConnectBondFactory'
-import SubscribeBond from '../helpers/SubscribeBond'
 import { Slider, Typography, Grid, Input, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles({
