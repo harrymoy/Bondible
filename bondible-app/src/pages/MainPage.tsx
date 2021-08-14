@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import homePage from '../images/homePage.png'
 import { NavLink } from "react-router-dom";
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,6 +27,10 @@ const MainPage = () => {
   //const handleOnClick = (event: React.MouseEvent<HTMLAreaElement, MouseEvent>): void => {
   //  if (!route.enabled) e.preventDefault();
   //}
+
+  useEffect(() => {
+    document.title = "Bondible";
+  })
 
   return (
       <div className={classes.imgWrapper}>
