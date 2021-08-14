@@ -16,28 +16,32 @@ const BondTile = (props: BondTileProps) => {
     const [shouldShowSubscribe, setShowSubscribe] = useState<boolean>(false);
 
     return(
-
-        <div className='bondTile'>
-            <ul>
-                <li>{props.bondAddress}</li>
-                <li>{props.bondId}</li>
-                <li>{props.maxSubscription}</li>
-                <li>{props.currentBalance}</li>
-                <li>{props.rate}</li>
-            </ul>
-            <Button variant='contained' onClick={():void => setShowSubscribe(true) }>Subscribe</Button>
-            {shouldShowSubscribe && (
-                <>
-                {!props.bondAddress ? (
-                    <div className='error'>
-                        <p>Bond not available</p>
-                    </div>
-                ) : (
-                    <SubscriptionSlider maxSubscription={props.maxSubscription!} />
+        <div>
+            <div>This is the top bar</div>
+            <header>This is the header</header>
+            <body className='bondTile'>
+                <ul>
+                    <li>{props.bondAddress}</li>
+                    <li>{props.bondId}</li>
+                    <li>{props.maxSubscription}</li>
+                    <li>{props.currentBalance}</li>
+                    <li>{props.rate}</li>
+                </ul>
+                <Button variant='contained' onClick={():void => setShowSubscribe(true) }>Subscribe</Button>
+                {shouldShowSubscribe && (
+                    <>
+                    {!props.bondAddress ? (
+                        <div className='error'>
+                            <p>Bond not available</p>
+                        </div>
+                    ) : (
+                        <SubscriptionSlider maxSubscription={props.maxSubscription!} />
+                    )}
+                    </>
                 )}
-                </>
-            )}
-        </div>
+            </body>
+            <footer>This is the footer</footer>
+        </div>    
     )
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import homePage from '../images/homePage.png'
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -36,7 +36,7 @@ const MainPage = () => {
       <div className={classes.imgWrapper}>
         <img src={homePage} alt="Home Page" useMap="#map" className={classes.img}></img>
         <map name="map">
-          <NavLink
+          <Link
             to="/bondform"
           >
             <area 
@@ -45,9 +45,9 @@ const MainPage = () => {
               alt="Create" 
               href=""
             />
-          </NavLink>
-          <NavLink
-            to="/catalogue"
+          </Link>
+          <Link
+            to="/browse"
           >
             <area
               shape="rect"
@@ -55,7 +55,7 @@ const MainPage = () => {
               alt="Browse"
               href=""
             />
-          </NavLink>
+          </Link>
         </map>
       </div>
   )
