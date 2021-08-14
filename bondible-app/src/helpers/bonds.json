@@ -1,0 +1,15 @@
+{"1": {
+    "companyName": "Company A",
+    "companyBlurb": "Company A Blurb",
+    "bondMaxSubscription": "100",
+    "bondRate": "10",
+    "bondDescription": "Description of the Bond 1"
+  },
+ "2": {
+    "companyName": "Company B",
+    "companyBlurb": "Company B Blurb",
+    "bondMaxSubscription": "100",
+    "bondRate": "10",
+    "bondDescription": "Description of the Bond 2"
+ }
+}

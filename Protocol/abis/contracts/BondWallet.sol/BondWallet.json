@@ -160,6 +160,11 @@
         "internalType": "uint256",
         "name": "_subscriptionAmount",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_subscriber",
+        "type": "address"
       }
     ],
     "name": "subscribeToBond",
