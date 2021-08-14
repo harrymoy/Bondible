@@ -1,4 +1,4 @@
-import React, { createRef, Component } from 'react'
+import React from 'react'
 import { useState } from 'react'
 import CreateBond from '../helpers/CreateBond'
 import ConnectBondFactory from '../helpers/ConnectBondFactory'
@@ -49,8 +49,12 @@ const BondForm = (props: bondData) => {
   const [subscriptionValue, setSubscriptionValue] = useState<string>('')
   const [rateValue, setRateValue] = useState<string>('')
   const [descriptionValue, setDescriptionValue] = useState<string>('')
+  const [showMessage, setShowMessage] = useState<boolean>(false);
 
   async function issueBond() {
+    if (subscriptionValue === '') {return false;}
+    if (rateValue === '') {return false;}
+    if (descriptionValue === '') {return false;}
     console.log('Creating bond')
     console.log('The max subscription is: ', subscriptionValue)
     console.log('The rate is: ', rateValue)
@@ -124,7 +128,27 @@ const BondForm = (props: bondData) => {
           <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>
         </FormControl>
         <span></span>
-        <input className={classes.submit} onClick={issueBond} type="submit" value="Submit"/>
+        <input className={classes.submit} onClick={issueBond} type="submit" value="Submit" onMouseEnter={() => setShowMessage(true)} onMouseLeave={() => setShowMessage(false)}/>
+        {showMessage && (
+          <div>
+            Upon submitting, your bond will be created.
+          </div>
+        )}
+        {subscriptionValue === '' && (
+          <div style={{color: 'red'}}>
+            Please enter a subscription amount for the bond.
+          </div>
+        )}
+        {rateValue === '' && (
+          <div style={{color: 'red'}}>
+            Please enter a rate for the bond.
+          </div>
+        )}
+        {descriptionValue === '' && (
+          <div style={{color: 'red'}}>
+            Please enter a description for the bond.
+          </div>
+        )}
       </div>
     </div>
   )
