@@ -33,6 +33,11 @@ module.exports = {
     only: [],
     spacing: 2,
   },
+  networks: {
+    hardhat: {
+      chainId: 1337
+    },
+  }
   // networks: {
   //   hardhat: {
   //     forking: {

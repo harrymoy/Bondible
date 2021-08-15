@@ -1,22 +1,39 @@
 import React, { useState } from 'react'
-import { Slider, Typography, Grid, Input, makeStyles } from '@material-ui/core'
+import { Slider, Typography, Grid, Input, makeStyles, createStyles, Theme } from '@material-ui/core'
 
-const useStyles = makeStyles({
-  root: {
-    width: 250,
-  },
-  input: {
-    width: 42,
-  },
-})
+const useStyles = makeStyles((theme: Theme) => 
+  createStyles({
+    root: {
+        maxWidth: "75%",
+        margin: "0 auto"
+    },
+    sliderTopbar: {},       
+    sliderHeader: {
+        textAlign: "center",
+        color: "white"
+    },
+    sliderBody: {
+        width: "50%",
+        marginLeft: "auto",
+        marginRight: "auto"
+    },
+    sliderFooter: {
+        maxWidth: "75%",
+        margin: "0 auto"
+    },
+    hide: {
+        visibility: "hidden"
+    },
+  })  
+);
 interface subscriptionSlider {
   maxSubscription: number,
-  currentMaxSubscription?: number
+  currentMaxSubscription?: number,
+  bondId: number
 }
 
 const SubscriptionSlider = (props: subscriptionSlider) => {
   const classes = useStyles()
-  const [bondId, setBondId] = useState<number>(1)
   const [subscriptionAmount, setSubscriptionAmount] = useState<number | number[]>(0)
 
   const handleSliderChange = (event: React.ChangeEvent<{}>,
@@ -36,34 +53,39 @@ const SubscriptionSlider = (props: subscriptionSlider) => {
   }
 
   return (
-    <div className={classes.root}>
-      <Typography id="input-slider" gutterBottom>
-        Subscribe to bond.
-      </Typography>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs>
-          <Slider
-            onChange={handleSliderChange}
-            aria-labelledby="input-slider"
-          />
+    <div>
+      <div>
+      </div>
+      <header>
+        <Typography id="input-slider" gutterBottom>
+          Subscribe to bond.
+        </Typography>      
+      </header>
+      <div className={classes.sliderBody}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs>
+            <Slider
+              onChange={handleSliderChange}
+              aria-labelledby="input-slider"
+            />
+          </Grid>
+          <Grid item>
+            <Input
+              value={subscriptionAmount}
+              margin="dense"
+              onChange={handleInputChange}
+              onBlur={handleMinMax}
+              inputProps={{
+                step: 10,
+                min: 0,
+                max: 100,
+                type: 'number',
+                'aria-labelledby': 'input-slider',
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid item>
-          <Input
-            className={classes.input}
-            value={subscriptionAmount}
-            margin="dense"
-            onChange={handleInputChange}
-            onBlur={handleMinMax}
-            inputProps={{
-              step: 10,
-              min: 0,
-              max: 100,
-              type: 'number',
-              'aria-labelledby': 'input-slider',
-            }}
-          />
-        </Grid>
-      </Grid>
+      </div>
     </div>
   )
 }
