@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import CreateBond from '../helpers/CreateBond'
-import ConnectBondFactory from '../helpers/ConnectBondFactory'
-import { Contract } from 'ethers'
 import { makeStyles, createStyles, Theme, FormControl, FormHelperText } from '@material-ui/core'
+import { issueBondHelper } from '../helpers/BondFactoryHelper'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,24 +48,22 @@ const BondForm = (props: bondData) => {
   const handleBlankValue = (val:string) => {
     return val.trim() === '' ? 0 : parseInt(val);
   }
-
+  
   const [subscriptionValue, setSubscriptionValue] = useState<number>(0)
   const [rateValue, setRateValue] = useState<number>(0)
   const [descriptionValue, setDescriptionValue] = useState<string>('')
+  const [showMessage, setShowMessage] = useState<boolean>(false);
+
+
   async function issueBond() {
+    if (subscriptionValue === 0) {return false;}
+    if (rateValue === 0) {return false;}
+    if (descriptionValue === '') {return false;}
     console.log('Creating bond')
     console.log('The max subscription is: ', subscriptionValue)
     console.log('The rate is: ', rateValue)
     console.log('The description is: ', descriptionValue)
-    const bondFactoryContract: Contract = ConnectBondFactory(
-      props.contractAddress,
-    )
-    console.log(bondFactoryContract)
-    CreateBond(
-      rateValue,
-      subscriptionValue,
-      bondFactoryContract,
-    )
+    await issueBondHelper(props.contractAddress, rateValue, subscriptionValue);
   }
 
   const displayRequiredStatus = (element : JSX.Element, value: Number) => {
@@ -141,7 +137,27 @@ const BondForm = (props: bondData) => {
           }
           </FormControl>
         <span></span>
-        <input className={classes.submit} onClick={issueBond} type="submit" value="Submit"/>
+        <input className={classes.submit} onClick={issueBond} type="submit" value="Submit" onMouseEnter={() => setShowMessage(true)} onMouseLeave={() => setShowMessage(false)}/>
+        {showMessage && (
+          <div>
+            Upon submitting, your bond will be created.
+          </div>
+        )}
+        {subscriptionValue === 0 && (
+          <div style={{color: 'red'}}>
+            Please enter a subscription amount for the bond.
+          </div>
+        )}
+        {rateValue === 0 && (
+          <div style={{color: 'red'}}>
+            Please enter a rate for the bond.
+          </div>
+        )}
+        {descriptionValue === 0 && (
+          <div style={{color: 'red'}}>
+            Please enter a description for the bond.
+          </div>
+        )}
       </div>
     </div>
   )

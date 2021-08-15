@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import homePage from '../images/homePage.png'
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,29 +28,34 @@ const MainPage = () => {
   //  if (!route.enabled) e.preventDefault();
   //}
 
+  useEffect(() => {
+    document.title = "Bondible";
+  })
+
   return (
       <div className={classes.imgWrapper}>
         <img src={homePage} alt="Home Page" useMap="#map" className={classes.img}></img>
         <map name="map">
-          <NavLink
+          <Link
             to="/bondform"
           >
-          <area 
-            shape="rect" 
-            coords="76,14,162,449" 
-            alt="Create" 
-            href=""
-          />
-          </NavLink>
-          <NavLink
-            to="/"
+            <area 
+              shape="rect" 
+              coords="76,14,162,449" 
+              alt="Create" 
+              href=""
+            />
+          </Link>
+          <Link
+            to="/browse"
           >
-          <area
-            shape="rect"
-            coords="1207,13,1292,447"
-            alt="Browse"
-            href=""/>
-          </NavLink>
+            <area
+              shape="rect"
+              coords="1207,13,1292,447"
+              alt="Browse"
+              href=""
+            />
+          </Link>
         </map>
       </div>
   )

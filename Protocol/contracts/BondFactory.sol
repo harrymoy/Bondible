@@ -44,7 +44,6 @@ contract BondFactory {
         Issue the bond and create a BondWallet contract.
         @param _rate: The rate the bond is issued at.
         @param _maxSubscription: The amount the user is looking to raise.
-        @return Returns the address of the issued bond.
      */                                     
     function issueBond(uint _rate, uint _maxSubscription) public returns (address) {
         BondWallet bond = new BondWallet(msg.sender, _maxSubscription, _rate, paymentToken);
@@ -142,7 +141,6 @@ contract BondFactory {
         Changes the maximum subscription if the user is the owner.
         @param _bondId: The Id for a specific bond.
         @param _amount: The amount they wish to change the max subscription to.
-        @return: The amount
      */
     function changeMaxSubscription(uint _bondId, uint _amount) public returns(uint)  {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
@@ -155,10 +153,9 @@ contract BondFactory {
         Changes the rate if the user is the owner.
         @param _bondId: The Id for a specific bond.
         @param _newRate: The new rate they wish to apply.
-        @return: The new rate.
      */
-    function changeRate(uint _bondID, uint _newRate) public returns(uint) {
-        BondWallet selectedBOnd = BondWallet(bonds[_bondID]);
+    function changeRate(uint _bondId, uint _newRate) public returns(uint) {
+        BondWallet selectedBond = BondWallet(bonds[_bondId]);
         uint newRate = selectedBond.changeRate(_newRate);
         emit RateChange(newRate);
         return newRate;

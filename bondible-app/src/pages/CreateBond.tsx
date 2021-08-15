@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import BondForm from '../components/BondForm'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme: Theme) =>
 const CreateBond = () => {
   const classes = useStyles();
 
+  useEffect(() => {
+    document.title = "Create a bond";
+  })
+
   return (
     <div className={classes.root}>
       <BackButton/>
@@ -34,7 +38,7 @@ const CreateBond = () => {
           Create a Bond
         </Typography>
         <BondForm
-          contractAddress="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+          contractAddress="0xdE08633aBb017FAfbc43fd1fBf9CA8BC661fc688"
         />
       </Paper>
     </div>
