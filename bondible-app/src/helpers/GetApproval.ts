@@ -18,6 +18,7 @@ const connectContract = async (contractAddress: string) => {
 
 const getApprovalToSpend = async (spender: string, amount: number) => { 
     if(window.ethereum) {
+        console.log("Calling contract");
         const contractToCall = await connectContract("0xfe4F5145f6e09952a5ba9e956ED0C25e3Fa4c7F1");
         const approval = await contractToCall.approve(spender, amount);
         console.log("Approval given", approval);

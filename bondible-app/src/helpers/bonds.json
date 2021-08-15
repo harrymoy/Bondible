@@ -2,12 +2,14 @@
     "bondId": "1",
     "companyName": "Encode Club",
     "companyBlurb": "A young and exciting blockchain accelerator, focussing on empowering the web3 community.",
-    "bondDescription": "Raising funds for upcoming hackathon projects and prize pools."
+    "bondDescription": "Raising funds for upcoming hackathon projects and prize pools.",
+    "contractAddress": "0x30ab895f29da866000b3acd8c78dbb57d55a2a6a"
   },
   {
     "bondId": "2",
     "companyName": "In Futurae Fidelis",
     "companyBlurb": "A VC firm and angel investment tech giant who seek the best opportunities for investments. With a particular focus on blockchain and futurism. Co-founders Harry and Sam also deliver some great media content.",
-    "bondDescription": "Seeking funds to invest in highly touted start up Bondible."
+    "bondDescription": "Seeking funds to invest in highly touted start up Bondible.",
+    "contractAddress": "0x0045e188AaB1705257fB487D2cBFC40406e9Cf95"
  }
 ]

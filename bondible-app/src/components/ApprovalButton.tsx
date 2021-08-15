@@ -3,10 +3,19 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { getUserWalletAddress } from "../helpers/ConnectMetaMask";
 import getApprovalToSpend from "../helpers/GetApproval";
+import bondInfo from '../helpers/bonds.json';
 
 interface approvalButtonProps {
-    contractAddress: string;
-    amount: number;
+    contractAddress?: string;
+    amount?: number;
+}
+
+interface CompanyData {
+    companyName: string
+    companyBlurb: string
+    bondDescription: string
+    bondId: string
+    contractAddress: string
 }
 
 const ApproveButton = (props: approvalButtonProps) => {
@@ -14,8 +23,8 @@ const ApproveButton = (props: approvalButtonProps) => {
     const [isShown, setIsShown] = useState<boolean>(false);
     const [address, setAddress] = useState<string>('');
     const getApproval = async () => {
-        console.log(props.contractAddress);
-        await getApprovalToSpend(props.contractAddress, props.amount);
+        console.log("getting approval", props.contractAddress!);
+        await getApprovalToSpend(bondInfo[0].contractAddress, props.amount!);
     }
 
     const fetchWallet = async () => {

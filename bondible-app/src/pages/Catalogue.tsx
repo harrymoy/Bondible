@@ -41,6 +41,7 @@ interface CompanyData {
     companyBlurb: string
     bondDescription: string
     bondId: string
+    contractAddress: string
 }
 
 const Catalogue = (props: catalogue) => {
@@ -49,9 +50,11 @@ const Catalogue = (props: catalogue) => {
     const [companyData, setCompanyData] = useState<CompanyData[]>([])
     
     useEffect(() => {
+        document.title = "Bond Catalogue";
         const wallet = getUserWalletAddress()
         setUserWallet(wallet.toString())
         setCompanyData(bondInfo)
+        console.log("contract address");
     },[])
 
     const getBonds = () => {
@@ -77,6 +80,7 @@ const Catalogue = (props: catalogue) => {
                                     bondDescription={company.bondDescription}
                                     companyBlurb={company.companyBlurb}
                                     bondId={parseInt(company.bondId)}
+                                    contractAddress={company.contractAddress}
                                 />
                             </Paper>
                         </div>

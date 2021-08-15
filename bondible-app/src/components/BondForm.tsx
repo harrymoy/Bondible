@@ -80,7 +80,7 @@ const BondForm = (props: bondData) => {
     await getChainId();
     if (isPolygon) {
       setPolygon(true);
-      await issueBondHelper(props.contractAddress, rateValue, subscriptionValue);
+      await issueBondHelper(rateValue, subscriptionValue);
     } else {
       return false;
     }
