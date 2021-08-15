@@ -4,10 +4,10 @@ import { Theme } from "@material-ui/core"
 const rootStyles = makeStyles((theme: Theme) => {
     createStyles({
         topBar: {
-            
+            textAlign: "center"
         },
         header: {
-
+            font: ""
         },
         body: {
 

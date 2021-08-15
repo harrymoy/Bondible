@@ -2,72 +2,101 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { Contract, Wallet } from 'ethers'
 import BondTile from '../components/BondTile'
 import { getUserWalletAddress } from '../helpers/ConnectMetaMask'
 import rootStyles from '../helpers/rootStyles';
 import bondInfo from '../helpers/bonds.json'
+import BackButton from '../components/BackButton'
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles((theme: Theme) => 
   createStyles({
+    root: {
+        maxWidth: "75%",
+        margin: "0 auto"
+    },
+    catalogueTopbar: {},       
+    catalogueHeader: {
+        textAlign: "center",
+        color: "white"
+    },
+    catalogueBody: {
+        paddingTop: "10px"
+    },
+    catalogueFooter: {
+        maxWidth: "75%",
+        margin: "0 auto"
+    },
+    hide: {
+        visibility: "hidden"
+    },
   })  
-})
+);
 
 interface catalogue {
     contractAddress: string
 }
 
+interface CompanyData {
+    companyName: string
+    companyBlurb: string
+    bondDescription: string
+    bondId: string
+}
 
 const Catalogue = (props: catalogue) => {
-    const rootClasses = rootStyles();
     const classes = useStyles();
-
     const [userWallet, setUserWallet] = useState<string>('')
-
+    const [companyData, setCompanyData] = useState<CompanyData[]>([])
+    
     useEffect(() => {
         const wallet = getUserWalletAddress()
         setUserWallet(wallet.toString())
-    })
+        setCompanyData(bondInfo)
+    },[])
 
-
-    /** 
-     * 1. GRAB DATA FROM JSON FILE AND PASS INTO AN ARRAY - bonds.json
-     * 2. USE array.map() TO RENDER TILE COMPONENT FOR AS MANY ITEMS IN ARRAY.
-     * 3. QUERY BOND DATA FROM THIS FILE - CALL THE QUERY BOND FUNCTION AND CAPTURE MAXSUBSCRIPTION, CURRENTLY SUBSCRIBED
-     * 4. CALCULATE THE CURRENT MAX SUBSCRIPTION AMOUNT AND PARSE THAT TO THE TILE COMPONENT, THE TILE COMPONENT THEN PARSES THAT TO THE SLIDER
-     */
-    
-    //const getBondData = () => {
-    //   const bondFactoryContract: Contract = ConnectBondFactory(props.contractAddress)
-
-     //   bondFactoryContract.queryBondData()
-    //}
+    const getBonds = () => {
+        if (companyData) {
+            const bonds = companyData.map((company) => {
+                return(
+                    <>
+                        <div className={classes.hide}>
+                            {company.bondId}
+                        </div>
+                        <header className={classes.catalogueHeader}>
+                            <Typography variant="h3" component="h3">
+                                {company.companyName}
+                            </Typography>
+                        </header>
+                        <div className={classes.catalogueBody}>
+                            <Paper
+                                elevation={1}
+                                square={false}
+                            >            
+                                <BondTile
+                                    userWallet={userWallet}
+                                    bondDescription={company.bondDescription}
+                                    companyBlurb={company.companyBlurb}
+                                    bondId={parseInt(company.bondId)}
+                                />
+                            </Paper>
+                        </div>
+                        <footer>
+            
+                        </footer>
+                    </>
+                )
+            })
+            return bonds
+        } else {
+            console.log("nothing")
+        }
+    }
 
     return(
-        <div>
-            <div>
-
-            </div>
-            <header>
-                <Typography variant="h1" component="h3">
-                    Bond 1
-                </Typography>
-            </header>
-            <body>
-                <Paper 
-                    elevation={1}
-                    square={false}
-                >            
-                    <BondTile
-                        userWallet={userWallet}
-                    />
-                </Paper>
-            </body>
-            <footer>
-
-            </footer>
+        <div className={classes.root}>
+            <BackButton/>
+            {getBonds()}
         </div>
-
     )
 }
 
