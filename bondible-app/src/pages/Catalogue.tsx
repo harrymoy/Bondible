@@ -17,6 +17,9 @@ interface catalogue {
     contractAddress: string
 }
 
+interface CompanyDataHolder {
+    [key: string]: CompanyData
+}
 interface CompanyData {
     companyName: string
     companyBlurb: string
@@ -28,25 +31,20 @@ const Catalogue = (props: catalogue) => {
     const classes = useStyles();
 
     const [userWallet, setUserWallet] = useState<string>('')
-    const [companyData, setCompanyData] = useState<CompanyData[] | Array<CompanyData>>()
+    const [companyData, setCompanyData] = useState<CompanyDataHolder[] | Array<CompanyDataHolder>>()
     
     useEffect(() => {
         const wallet = getUserWalletAddress()
         setUserWallet(wallet.toString())
-        console.log(bondInfo)
-        //var resultArray = Object.keys(bondInfo).map(function(bondInfoName){
-        //    let bond = bondInfo[bondInfoName];
-            // do something with person
-        //    return bond;
-        //});
-    
+
+        const bondInfoString = JSON.stringify(bondInfo)
+        setCompanyData(JSON.parse(bondInfoString))
     },[])
 
     const getBonds = () => {
-        console.log(companyData)
-        console.log(companyData instanceof Object)
         if (companyData){
-            const bonds = companyData.map((company, index) => {
+            const arr = Object.keys(companyData) 
+            const bonds = arr.map((company, index) => {
                 return(
                     <div>
                         <div>
@@ -54,7 +52,7 @@ const Catalogue = (props: catalogue) => {
                         </div>
                         <header>
                             <Typography variant="h3" component="h3">
-                                {company.companyName[0]}
+                                {company}
                             </Typography>
                         </header>
                         <div>
