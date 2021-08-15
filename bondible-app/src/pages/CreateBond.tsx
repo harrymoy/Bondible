@@ -3,6 +3,7 @@ import BondForm from '../components/BondForm'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import BackButton from '../components/BackButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,11 +12,10 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: "0 auto"
     },
     form: {
-        ...theme.mixins.gutters(),
         paddingTop: theme.spacing(6),
         paddingBottom: theme.spacing(2),
         textAlign: 'center'
-      },
+      }
   })
 );
 
@@ -28,6 +28,7 @@ const CreateBond = () => {
 
   return (
     <div className={classes.root}>
+      <BackButton/>
       <Paper 
       className={classes.form} 
       elevation={1}

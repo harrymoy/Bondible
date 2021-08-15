@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { makeStyles, createStyles, Theme, FormControl, FormHelperText } from '@material-ui/core'
 import { issueBondHelper } from '../helpers/BondFactoryHelper'
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: 'red'
     },
     submit: {
-      width: '100%',
+      width: '30%',
       backgroundColor: '#4CAF50',
       color: 'white',
       padding: '14px 20px',
@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
       border: 'none',
       borderRadius: '4px',
       cursor: 'pointer',
+      marginTop: '2rem'
     }  
   })
 );
@@ -44,20 +45,29 @@ interface bondData {
 const BondForm = (props: bondData) => {
   const classes = useStyles();
 
-  const [subscriptionValue, setSubscriptionValue] = useState<string>('')
-  const [rateValue, setRateValue] = useState<string>('')
+  const handleBlankValue = (val:string) => {
+    return val.trim() === '' ? 0 : parseInt(val);
+  }
+  
+  const [subscriptionValue, setSubscriptionValue] = useState<number>(0)
+  const [rateValue, setRateValue] = useState<number>(0)
   const [descriptionValue, setDescriptionValue] = useState<string>('')
   const [showMessage, setShowMessage] = useState<boolean>(false);
 
+
   async function issueBond() {
-    if (subscriptionValue === '') {return false;}
-    if (rateValue === '') {return false;}
+    if (subscriptionValue === 0) {return false;}
+    if (rateValue === 0) {return false;}
     if (descriptionValue === '') {return false;}
     console.log('Creating bond')
     console.log('The max subscription is: ', subscriptionValue)
     console.log('The rate is: ', rateValue)
     console.log('The description is: ', descriptionValue)
-    await issueBondHelper(props.contractAddress, parseInt(rateValue), parseInt(subscriptionValue));
+    await issueBondHelper(props.contractAddress, rateValue, subscriptionValue);
+  }
+
+  const displayRequiredStatus = (element : JSX.Element, value: Number) => {
+    return value <= 0 && element
   }
 
   return (
@@ -73,12 +83,14 @@ const BondForm = (props: bondData) => {
             aria-describedby="requiredText"
             value={subscriptionValue}
             onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
-              setSubscriptionValue(ev.target.value)
+              setSubscriptionValue(handleBlankValue(ev.target.value))
             }
             className={classes.input}
-            placeholder="Amount in DAI"
           />
-          <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>
+          {displayRequiredStatus(
+              <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>,
+              subscriptionValue
+            )}
         </FormControl>
         <span></span>
         <br/>
@@ -92,11 +104,16 @@ const BondForm = (props: bondData) => {
             type="number"
             value={rateValue}
             onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
-              setRateValue(ev.target.value)
+              setRateValue(handleBlankValue(ev.target.value))
             }
             className={classes.input}
           />
-          <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>
+            {displayRequiredStatus(
+              <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>,
+              rateValue
+            )}
+             
+          
         </FormControl>
         <span></span>
         <br/>
@@ -115,8 +132,10 @@ const BondForm = (props: bondData) => {
             placeholder="Enter a description about this bond"
             className={classes.input}
           />
-          <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>
-        </FormControl>
+          {
+            descriptionValue.length < 1 && <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>
+          }
+          </FormControl>
         <span></span>
         <input className={classes.submit} onClick={issueBond} type="submit" value="Submit" onMouseEnter={() => setShowMessage(true)} onMouseLeave={() => setShowMessage(false)}/>
         {showMessage && (
@@ -124,17 +143,17 @@ const BondForm = (props: bondData) => {
             Upon submitting, your bond will be created.
           </div>
         )}
-        {subscriptionValue === '' && (
+        {subscriptionValue === 0 && (
           <div style={{color: 'red'}}>
             Please enter a subscription amount for the bond.
           </div>
         )}
-        {rateValue === '' && (
+        {rateValue === 0 && (
           <div style={{color: 'red'}}>
             Please enter a rate for the bond.
           </div>
         )}
-        {descriptionValue === '' && (
+        {descriptionValue === 0 && (
           <div style={{color: 'red'}}>
             Please enter a description for the bond.
           </div>
