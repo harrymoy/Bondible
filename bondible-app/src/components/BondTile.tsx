@@ -10,6 +10,8 @@ interface BondTileProps {
     rate?: number;
     currentBalance?: number;
     userWallet: string;
+    bondDescription: string;
+    companyBlurb?: string;
 }
 
 const BondTile = (props: BondTileProps) => {
@@ -17,8 +19,8 @@ const BondTile = (props: BondTileProps) => {
 
     return(
         <div>
-            <div>This is the top bar</div>
-            <header>This is the header</header>
+            <div>{props.companyBlurb}</div>
+            <header>{props.bondDescription}</header>
             <div className='bondTile'>
                 <ul>
                     <li>{props.bondAddress}</li>
@@ -40,7 +42,7 @@ const BondTile = (props: BondTileProps) => {
                     </>
                 )}
             </div>
-            <footer>This is the footer</footer>
+            <footer></footer>
         </div>    
     )
 }
