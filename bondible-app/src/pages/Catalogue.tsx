@@ -17,21 +17,70 @@ interface catalogue {
     contractAddress: string
 }
 
+interface CompanyData {
+    companyName: string
+    companyBlurb: string
+    bondDescription: string
 
+}
 const Catalogue = (props: catalogue) => {
     const rootClasses = rootStyles();
     const classes = useStyles();
 
     const [userWallet, setUserWallet] = useState<string>('')
-
+    const [companyData, setCompanyData] = useState<CompanyData[] | Array<CompanyData>>()
+    
     useEffect(() => {
         const wallet = getUserWalletAddress()
         setUserWallet(wallet.toString())
-    })
+        console.log(bondInfo)
+        //var resultArray = Object.keys(bondInfo).map(function(bondInfoName){
+        //    let bond = bondInfo[bondInfoName];
+            // do something with person
+        //    return bond;
+        //});
+    
+    },[])
 
+    const getBonds = () => {
+        console.log(companyData)
+        console.log(companyData instanceof Object)
+        if (companyData){
+            const bonds = companyData.map((company, index) => {
+                return(
+                    <div>
+                        <div>
+            
+                        </div>
+                        <header>
+                            <Typography variant="h3" component="h3">
+                                {company.companyName[0]}
+                            </Typography>
+                        </header>
+                        <div>
+                            <Paper 
+                                elevation={1}
+                                square={false}
+                            >            
+                                <BondTile
+                                    userWallet={userWallet}
+                                />
+                            </Paper>
+                        </div>
+                        <footer>
+            
+                        </footer>
+                    </div>
+                )
+            })
+            console.log(bonds)
+            return bonds
+        } else {
+            console.log("nothing")
+        }
+    }
 
     /** 
-     * 1. GRAB DATA FROM JSON FILE AND PASS INTO AN ARRAY - bonds.json
      * 2. USE array.map() TO RENDER TILE COMPONENT FOR AS MANY ITEMS IN ARRAY.
      * 3. QUERY BOND DATA FROM THIS FILE - CALL THE QUERY BOND FUNCTION AND CAPTURE MAXSUBSCRIPTION, CURRENTLY SUBSCRIBED
      * 4. CALCULATE THE CURRENT MAX SUBSCRIPTION AMOUNT AND PARSE THAT TO THE TILE COMPONENT, THE TILE COMPONENT THEN PARSES THAT TO THE SLIDER
@@ -45,27 +94,7 @@ const Catalogue = (props: catalogue) => {
 
     return(
         <div>
-            <div>
-
-            </div>
-            <header>
-                <Typography variant="h1" component="h3">
-                    Bond 1
-                </Typography>
-            </header>
-            <body>
-                <Paper 
-                    elevation={1}
-                    square={false}
-                >            
-                    <BondTile
-                        userWallet={userWallet}
-                    />
-                </Paper>
-            </body>
-            <footer>
-
-            </footer>
+            {getBonds()}
         </div>
 
     )

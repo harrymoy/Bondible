@@ -19,7 +19,7 @@ const BondTile = (props: BondTileProps) => {
         <div>
             <div>This is the top bar</div>
             <header>This is the header</header>
-            <body className='bondTile'>
+            <div className='bondTile'>
                 <ul>
                     <li>{props.bondAddress}</li>
                     <li>{props.bondId}</li>
@@ -39,7 +39,7 @@ const BondTile = (props: BondTileProps) => {
                     )}
                     </>
                 )}
-            </body>
+            </div>
             <footer>This is the footer</footer>
         </div>    
     )
