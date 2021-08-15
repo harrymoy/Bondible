@@ -31,7 +31,7 @@ const Catalogue = (props: catalogue) => {
     const classes = useStyles();
 
     const [userWallet, setUserWallet] = useState<string>('')
-    const [companyData, setCompanyData] = useState<CompanyDataHolder[] | Array<CompanyDataHolder>>()
+    const [companyData, setCompanyData] = useState<{}>({})
     
     useEffect(() => {
         const wallet = getUserWalletAddress()
@@ -41,10 +41,21 @@ const Catalogue = (props: catalogue) => {
         setCompanyData(JSON.parse(bondInfoString))
     },[])
 
+    const createArray = (obj: CompanyDataHolder) => {
+        if(obj){
+            var array = []
+            for(const bondId in obj){
+                array.push("{" + obj[bondId].companyName + "," + obj[bondId].companyBlurb + "," + obj[bondId].bondDescription + "}")
+                return array
+            }
+        }
+    }
+
+
     const getBonds = () => {
-        if (companyData){
-            const arr = Object.keys(companyData) 
-            const bonds = arr.map((company, index) => {
+        const newArray = createArray(companyData)
+        if (newArray){
+            const bonds = newArray.map((company, index) => {
                 return(
                     <div>
                         <div>
@@ -71,7 +82,6 @@ const Catalogue = (props: catalogue) => {
                     </div>
                 )
             })
-            console.log(bonds)
             return bonds
         } else {
             console.log("nothing")
