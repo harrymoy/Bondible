@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { makeStyles, createStyles, Theme, FormControl, FormHelperText } from '@material-ui/core'
 import { issueBondHelper } from '../helpers/BondFactoryHelper'
+import { getUserChainId } from '../helpers/ConnectMetaMask';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,6 +54,20 @@ const BondForm = (props: bondData) => {
   const [rateValue, setRateValue] = useState<number>(0)
   const [descriptionValue, setDescriptionValue] = useState<string>('')
   const [showMessage, setShowMessage] = useState<boolean>(false);
+  const [isPolygon, setPolygon] = useState<boolean>(false);
+
+  const getChainId = async () => {
+    const chainId = await getUserChainId();
+    console.log("Chain id is", chainId);
+    if (parseInt(chainId!, 16) === 80001) {
+      setPolygon(true);
+    }
+    console.log(isPolygon);
+  }
+
+  useEffect(() => {
+    getChainId()
+  }, [isPolygon])
 
 
   async function issueBond() {
@@ -63,7 +78,13 @@ const BondForm = (props: bondData) => {
     console.log('The max subscription is: ', subscriptionValue)
     console.log('The rate is: ', rateValue)
     console.log('The description is: ', descriptionValue)
-    await issueBondHelper(props.contractAddress, rateValue, subscriptionValue);
+    await getChainId();
+    if (isPolygon) {
+      setPolygon(true);
+      await issueBondHelper(props.contractAddress, rateValue, subscriptionValue);
+    } else {
+      return false;
+    }
   }
 
   const displayRequiredStatus = (element : JSX.Element, value: Number) => {
@@ -156,6 +177,11 @@ const BondForm = (props: bondData) => {
         {descriptionValue === '' && (
           <div style={{color: 'red'}}>
             Please enter a description for the bond.
+          </div>
+        )}
+        {!isPolygon && (
+          <div style={{color: 'red'}}>
+            Please connect to Polygon.
           </div>
         )}
       </div>
