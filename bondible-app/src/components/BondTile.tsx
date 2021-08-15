@@ -21,18 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
         textAlign: "center",
         paddingBottom: "20px",
         marginLeft: "20px"
-    },
-    submit: {
-        width: '30%',
-        backgroundColor: '#4CAF50',
-        color: 'white',
-        padding: '14px 20px',
-        margin: '8px 0',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        marginTop: '2rem'
-    }  
+    }
   })
 );
 interface BondTileProps {
@@ -44,11 +33,14 @@ interface BondTileProps {
     userWallet: string;
     bondDescription: string;
     companyBlurb?: string;
+    contractAddress?: string;
 }
 
 const BondTile = (props: BondTileProps) => {
     const classes = useStyles()
     const [shouldShowSubscribe, setShowSubscribe] = useState<boolean>(false);
+
+    console.log("Contract address", props.contractAddress!)
 
     return(
         <div>
@@ -56,7 +48,6 @@ const BondTile = (props: BondTileProps) => {
             <header id="bondTileHeader" className={classes.bondTileHeader}>{props.bondDescription}</header>
             <div id="bondTileBody" className={classes.bondTileBody}>
                 <SubscriptionSlider bondId={props.bondId} maxSubscription={props.maxSubscription!} />
-                <Button className={classes.submit} variant='contained' onClick={():void => setShowSubscribe(true) }>Subscribe</Button>
                 {shouldShowSubscribe && (
                     <>
                     {!props.bondAddress ? (
@@ -64,7 +55,7 @@ const BondTile = (props: BondTileProps) => {
                             <p>Bond not available</p>
                         </div>
                     ) : (
-                        <SubscriptionSlider bondId={props.bondId} maxSubscription={props.maxSubscription!} />
+                        <SubscriptionSlider bondId={props.bondId} maxSubscription={props.maxSubscription!} contractAddress={props.contractAddress!} />
                     )}
                     </>
                 )}

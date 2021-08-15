@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface bondData {
-  contractAddress: string
   walletAddress?: string
 }
 
@@ -71,8 +70,8 @@ const BondForm = (props: bondData) => {
 
 
   async function issueBond() {
-    if (subscriptionValue === 0) {return false;}
-    if (rateValue === 0) {return false;}
+    if (subscriptionValue <= 0) {return false;}
+    if (rateValue <= 0) {return false;}
     if (descriptionValue === '') {return false;}
     console.log('Creating bond')
     console.log('The max subscription is: ', subscriptionValue)
@@ -81,7 +80,7 @@ const BondForm = (props: bondData) => {
     await getChainId();
     if (isPolygon) {
       setPolygon(true);
-      await issueBondHelper(props.contractAddress, rateValue, subscriptionValue);
+      await issueBondHelper(rateValue, subscriptionValue);
     } else {
       return false;
     }

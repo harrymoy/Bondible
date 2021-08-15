@@ -37,9 +37,7 @@ const CreateBond = () => {
         <Typography variant="h1" component="h3">
           Create a Bond
         </Typography>
-        <BondForm
-          contractAddress="0xdE08633aBb017FAfbc43fd1fBf9CA8BC661fc688"
-        />
+        <BondForm />
       </Paper>
     </div>
   );
