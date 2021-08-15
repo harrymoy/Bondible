@@ -153,7 +153,7 @@ const BondForm = (props: bondData) => {
             Please enter a rate for the bond.
           </div>
         )}
-        {descriptionValue === 0 && (
+        {descriptionValue === '' && (
           <div style={{color: 'red'}}>
             Please enter a description for the bond.
           </div>
