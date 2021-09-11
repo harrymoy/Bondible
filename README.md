@@ -1,3 +1,5 @@
+![logo](./logo.png)
+
 # Bondible
 *This is a hackathon project, please be aware of this when using the project*
 
