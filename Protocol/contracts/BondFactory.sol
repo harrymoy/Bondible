@@ -28,10 +28,7 @@ contract BondFactory {
     event Withdrawal(uint _bondId, address _subscriber, uint _amount);
     event SubscriptionChange(uint _subscription);
     event RateChange(uint _newRate);
-    event BondQuery(uint _currentBalance, uint _maxSubscription, uint _rate);
-    event EmitAddressForApproval(address _bondAddress);
     
-
     //Instantiate the contract with the Dai token address.
     constructor(address _tokenAddress) {
         paymentToken = IERC20(_tokenAddress);
@@ -57,9 +54,9 @@ contract BondFactory {
         Emits the address for a selected bond so the .approve() can be called at Dai's address with the selected bond's address.
         @param _bondId: The Id for a specific bond.
      */    
-    function requestApprovalForBond(uint _bondId) public {
+    function requestApprovalForBond(uint _bondId) public view returns(address) {
         address bondAddress = bonds[_bondId];
-        emit EmitAddressForApproval(bondAddress);
+        return bondAddress;
     }
 
     /**
