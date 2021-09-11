@@ -28,6 +28,7 @@ contract BondFactory {
     event Withdrawal(uint _bondId, address _subscriber, uint _amount);
     event SubscriptionChange(uint _subscription);
     event RateChange(uint _newRate);
+    event ErrorHandler(string reason);
     
     //Instantiate the contract with the Dai token address.
     constructor(address _tokenAddress) {
@@ -103,7 +104,8 @@ contract BondFactory {
         try selectedBond.withdraw(_amount, msg.sender) {
             emit Withdrawal(_bondId, msg.sender, _amount);
             return true;
-        } catch {
+         } catch Error(string memory reason)  {
+            emit ErrorHandler(reason);
             return false;
         }
     }
@@ -116,7 +118,8 @@ contract BondFactory {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         try selectedBond.closeBond(msg.sender) {
             return true;
-        } catch {
+        } catch Error(string memory reason)  {
+            emit ErrorHandler(reason);
             return false;
         }
     }
@@ -129,7 +132,8 @@ contract BondFactory {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         try selectedBond.openBond(msg.sender) {
             return true;
-        } catch {
+        } catch Error(string memory reason)  {
+            emit ErrorHandler(reason);
             return false;
         }
     }
@@ -142,7 +146,8 @@ contract BondFactory {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         try selectedBond.deleteBond(msg.sender) {
             return true;
-        } catch {
+        } catch Error(string memory reason)  {
+            emit ErrorHandler(reason);
             return false;
         }
     }
