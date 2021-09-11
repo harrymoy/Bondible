@@ -26,7 +26,6 @@ contract BondFactory {
     event IssueBond (uint _bondId);
     event SubscribedToBond(address _bond, address _subscriber, uint _subscriptionValue);
     event Withdrawal(uint _bondId, address _subscriber, uint _amount);
-    event BondStateChange(string _message);
     event SubscriptionChange(uint _subscription);
     event RateChange(uint _newRate);
     event BondQuery(uint _currentBalance, uint _maxSubscription, uint _rate);
@@ -45,12 +44,13 @@ contract BondFactory {
         @param _rate: The rate the bond is issued at.
         @param _maxSubscription: The amount the user is looking to raise.
      */                                     
-    function issueBond(uint _rate, uint _maxSubscription) public returns (address) {
+    function issueBond(uint _rate, uint _maxSubscription) public returns (address, uint) {
         BondWallet bond = new BondWallet(msg.sender, _maxSubscription, _rate, paymentToken);
         bonds[bondCount] = address(bond);
+        uint bondId = bondCount;
+        emit IssueBond(bondId);
         bondCount++;
-        emit IssueBond(bondCount);
-        return address(bond);
+        return (address(bond), bondId);
     }
 
     /**
@@ -92,7 +92,7 @@ contract BondFactory {
         @param _bondId: The Id for a specific bond.
         @param _amount: The amount they wish to withdraw.
      */    
-    function withdraw(uint _bondId, uint _amount) public {
+    function withdraw(uint _bondId, uint _amount) public returns(bool) {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         uint bondCurrentBalance = selectedBond.getBalance();
 
@@ -103,38 +103,51 @@ contract BondFactory {
             uint availableBalance = subscribers[_bondId][msg.sender].availableBalance; 
             require(availableBalance > 0 && availableBalance > _amount, "You have no balance to withdraw");
         }
-        selectedBond.withdraw(_amount, msg.sender);
-        emit Withdrawal(_bondId, msg.sender, _amount);
+        try selectedBond.withdraw(_amount, msg.sender) {
+            emit Withdrawal(_bondId, msg.sender, _amount);
+            return true;
+        } catch {
+            return false;
+        }
     }
     
     /**
         Closes the bond so it cannot receive any more subscriptions if user is the owner.
         @param _bondId: The Id for a specific bond.
      */    
-    function closeBond(uint _bondId) public {
+    function closeBond(uint _bondId) public returns (bool) {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
-        selectedBond.closeBond(msg.sender);
-        emit BondStateChange("Closed");
+        try selectedBond.closeBond(msg.sender) {
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     /**
         Opens the bond so it can receive subscriptions if the user is the owner.
         @param _bondId: The Id for a specific bond.
      */
-    function openBond(uint _bondId) public {
+    function openBond(uint _bondId) public returns(bool) {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
-        selectedBond.openBond(msg.sender);
-        emit BondStateChange("Opened");
+        try selectedBond.openBond(msg.sender) {
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     /**
         Deletes the bond if the user is the owner.
         @param _bondId: The Id for a specific bond.
      */
-    function deleteBond(uint _bondId) public {
+    function deleteBond(uint _bondId) public returns (bool) {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
-        selectedBond.deleteBond(msg.sender);
-        emit BondStateChange("Deleted");
+        try selectedBond.deleteBond(msg.sender) {
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     /**
@@ -145,7 +158,6 @@ contract BondFactory {
     function changeMaxSubscription(uint _bondId, uint _amount) public returns(uint)  {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         uint newMax = selectedBond.changeMaxSubscription(_amount);
-        emit SubscriptionChange(newMax);
         return newMax;
     }
     
@@ -157,7 +169,6 @@ contract BondFactory {
     function changeRate(uint _bondId, uint _newRate) public returns(uint) {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         uint newRate = selectedBond.changeRate(_newRate);
-        emit RateChange(newRate);
         return newRate;
     }
 
@@ -165,11 +176,8 @@ contract BondFactory {
         Queries the selected bond's data.
         @param _bondId: The Id for a specific bond.
      */
-    function queryBondData(uint _bondId) public {
+    function queryBondData(uint _bondId) public view returns(BondWallet) {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
-        uint bondCurrentBalance = selectedBond.getBalance();
-        uint bondMaxSubscription = selectedBond.maxSubscription();
-        uint bondCurrentRate = selectedBond.rate();
-        emit BondQuery(bondCurrentBalance, bondMaxSubscription, bondCurrentRate);
+        return selectedBond;
     }
 } 
