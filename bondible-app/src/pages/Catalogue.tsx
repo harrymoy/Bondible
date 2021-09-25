@@ -3,7 +3,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import BondTile from '../components/BondTile'
-import { getUserWalletAddress } from '../helpers/ConnectMetaMask'
+import { getWalletData } from '../helpers/ConnectMetaMask'
 import rootStyles from '../helpers/rootStyles';
 import bondInfo from '../helpers/bonds.json'
 import BackButton from '../components/BackButton'
@@ -46,13 +46,17 @@ interface CompanyData {
 
 const Catalogue = (props: catalogue) => {
     const classes = useStyles();
-    const [userWallet, setUserWallet] = useState<string>('')
-    const [companyData, setCompanyData] = useState<CompanyData[]>([])
+    const [userWallet, setUserWallet] = useState<string>('');
+    const [companyData, setCompanyData] = useState<CompanyData[]>([]);
+
+    const getWalletDataFromMetaMask = async() => {
+        var wallet = await getWalletData();
+        setUserWallet(wallet![0]);
+    }
     
     useEffect(() => {
         document.title = "Bond Catalogue";
-        const wallet = getUserWalletAddress()
-        setUserWallet(wallet.toString())
+        getWalletDataFromMetaMask();
         setCompanyData(bondInfo)
         console.log("contract address");
     },[])
