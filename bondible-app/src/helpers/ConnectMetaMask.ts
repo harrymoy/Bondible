@@ -2,18 +2,14 @@ import MetaMaskOnboarding from '@metamask/onboarding'
 
 declare let window: any;
 
-const getUserWalletAddress = async (): Promise<string | undefined> => {
+const getWalletData = async (): Promise<Array<string> | undefined> => {
   if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+    let dataList = new Array<string>();
     const walletAddress = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    return walletAddress[0];
-  }
-}
-
-const getUserChainId = async (): Promise<string | undefined> => {
-  if (MetaMaskOnboarding.isMetaMaskInstalled()) {
     const chainId = await window.ethereum.request({ method: 'eth_chainId' })
-    return chainId;
+    dataList.push(walletAddress[0], chainId);
+    return dataList;
   }
 }
 
-export {getUserWalletAddress, getUserChainId}
+export {getWalletData}

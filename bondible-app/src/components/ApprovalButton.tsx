@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import { useEffect } from "react";
 import { useState } from "react";
-import { getUserWalletAddress } from "../helpers/ConnectMetaMask";
+import { getWalletData } from "../helpers/ConnectMetaMask";
 import getApprovalToSpend from "../helpers/GetApproval";
 import bondInfo from '../helpers/bonds.json';
 
@@ -28,8 +28,8 @@ const ApproveButton = (props: approvalButtonProps) => {
     }
 
     const fetchWallet = async () => {
-        const walletAddress = await getUserWalletAddress();
-        setAddress(walletAddress!);
+        const walletAddress = await getWalletData();
+        setAddress(walletAddress![0]);
         console.log("Wallet address", address);
     }
 

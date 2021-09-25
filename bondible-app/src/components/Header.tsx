@@ -10,7 +10,7 @@ import {
 import { NavLink } from "react-router-dom";
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Logo from '../images/bondibleSmall.png'
-import {getUserWalletAddress, getUserChainId} from '../helpers/ConnectMetaMask'
+import { getWalletData } from '../helpers/ConnectMetaMask'
 import { useState } from 'react';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -42,10 +42,9 @@ const MenuAppBar = () => {
   const [chain, setChain] = useState<string>('');
 
   const callMetamask = async () => {
-    var wallet = await getUserWalletAddress();
-    var chainId = await getUserChainId();
-    setAddress(wallet!);
-    setChain(chainId!);
+    var wallet = await getWalletData();
+    setAddress(wallet![0]);
+    setChain(wallet![1]);
   }
 
   return (

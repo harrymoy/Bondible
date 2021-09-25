@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { makeStyles, createStyles, Theme, FormControl, FormHelperText } from '@material-ui/core'
 import { issueBondHelper } from '../helpers/BondFactoryHelper'
-import { getUserChainId } from '../helpers/ConnectMetaMask';
+import {getWalletData } from '../helpers/ConnectMetaMask';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,9 +56,9 @@ const BondForm = (props: bondData) => {
   const [isPolygon, setPolygon] = useState<boolean>(false);
 
   const getChainId = async () => {
-    const chainId = await getUserChainId();
-    console.log("Chain id is", chainId);
-    if (parseInt(chainId!, 16) === 80001) {
+    const walletData = await getWalletData();
+    console.log("Chain id is", walletData![1]);
+    if (parseInt(walletData![1], 16) === 80001) {
       setPolygon(true);
     }
     console.log(isPolygon);
