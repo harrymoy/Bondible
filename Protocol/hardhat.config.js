@@ -19,7 +19,7 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
  */
 module.exports = {
   solidity: {
-    compilers: [{ version: '0.8.0' }],
+    compilers: [{ version: '0.8.10' }],
     overrides: {
       'contracts/DaiInstance.sol': {
         version: '0.5.12',
