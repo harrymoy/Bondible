@@ -6,14 +6,38 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract BondCertificate is ERC721, ERC721URIStorage {
 
-    constructor(string memory _tokenUri, uint _bondId, address _owner) ERC721("Bond Certificate", "BND") {
-        createBondCertificate(_tokenUri, _bondId, _owner);
+    address private bondFactory;
+    uint private subscriptionCount = 0;
+    mapping(uint => uint) bondSubscriptions;
+
+    constructor() ERC721("Bond Certificate", "BND") {
+        bondFactory = msg.sender;
     }
 
-    function createBondCertificate(string memory _tokenUri, uint _bondId, address _owner) private returns (bool) {
+    modifier requireBondFactory() {
+        require(msg.sender == bondFactory, "You are not calling from bond factory");
+        _;
+    }
+
+    function createBondCertificate(address _owner, uint _bondId) public 
+        requireBondFactory()
+    {
         _mint(_owner, _bondId);
+    }
+
+    function saveCertificate(string memory _tokenUri, uint _bondId) public
+        requireBondFactory()
+    {
         _setTokenURI(_bondId, _tokenUri);
-        return true;
+    }
+
+    function createSubscriptionCertificate(address _owner, uint _bondId) public
+        requireBondFactory()
+    {
+        uint subscriptionId = subscriptionCount;
+        subscriptionCount++;
+        _mint(_owner, subscriptionId);
+        bondSubscriptions[subscriptionId] = _bondId;
     }
 
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {

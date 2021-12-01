@@ -75,7 +75,10 @@ contract BondWallet {
         @param _amount: The new maximum subscription amount.
         @return the new amount
      */   
-    function changeMaxSubscription(uint _amount) public requireBondFactory() requireBondClosed() returns(uint) {
+    function changeMaxSubscription(uint _amount) public requireBondFactory()
+        requireBondClosed()
+        returns(uint) 
+    {
         require (currentBalance < _amount, "You have too much in this bond already");
         maxSubscription = _amount;
         return maxSubscription;
@@ -86,7 +89,9 @@ contract BondWallet {
         @param _newRate: The new rate for the bond.
         @return the new rate
      */   
-    function changeRate(uint _newRate) public requireBondFactory() requireBondClosed() returns (uint) {
+    function changeRate(uint _newRate) public requireBondFactory() requireBondClosed()
+        returns (uint) 
+    {
         rate = _newRate;
         return rate;
     }
@@ -96,7 +101,12 @@ contract BondWallet {
         @param _subscriptionAmount: The amount the user wishes to subscribe
         @param _subscriber: The address of the subscriber
      */   
-    function subscribeToBond(uint _subscriptionAmount, address _subscriber) public payable requireBondFactory() requireBondOpen() {
+    function subscribeToBond(uint _subscriptionAmount, address _subscriber) 
+        public 
+        payable 
+        requireBondFactory() 
+        requireBondOpen() 
+    {
         paymentToken.transferFrom(_subscriber, address(this), _subscriptionAmount);
         currentBalance += _subscriptionAmount;
     }
@@ -106,14 +116,20 @@ contract BondWallet {
         @param _amount: The amount the user wishes to withdraw
         @param _address: The address of the withdrawer
      */   
-    function withdraw(uint _amount, address _address) public requireBondFactory() requireBondClosed() {
+    function withdraw(uint _amount, address _address) public 
+        requireBondFactory() 
+        requireBondClosed() 
+    {
         paymentToken.transferFrom(address(this) ,_address, _amount);
     }
 
     /**
         A function which closes the bond
      */   
-    function closeBond(address _address) public requireOwner(_address) requireBondFactory() requireBondOpen() {
+    function closeBond(address _address) public requireOwner(_address)
+        requireBondFactory()
+        requireBondOpen() 
+    {
         bondState = BondState.Closed;
     }
 
@@ -127,7 +143,10 @@ contract BondWallet {
     /**
         A function which deletes the bond
      */
-    function deleteBond(address _address) public requireOwner(_address) requireBondFactory() requireBondClosed() {
+    function deleteBond(address _address) public requireOwner(_address) 
+        requireBondFactory() 
+        requireBondClosed() 
+    {
         require(currentBalance == 0, "You cannot delete a bond with money inside");
         selfdestruct(owner);
     }
