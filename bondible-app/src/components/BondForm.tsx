@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { selectIsSubmitted, setTrue } from '../helpers/isSubmittedSlice'
 import { makeStyles, createStyles, Theme, FormControl, FormHelperText } from '@material-ui/core'
 import { issueBondHelper } from '../helpers/BondFactoryHelper'
-import {getWalletData } from '../helpers/ConnectMetaMask';
+import { getWalletData } from '../helpers/ConnectMetaMask';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: '4px',
       cursor: 'pointer',
       marginTop: '2rem'
-    }  
+    }
   })
 );
 
@@ -44,16 +45,19 @@ interface bondData {
 
 const BondForm = (props: bondData) => {
   const classes = useStyles();
-
-  const handleBlankValue = (val:string) => {
-    return val.trim() === '' ? 0 : parseInt(val);
-  }
-  
-  const [subscriptionValue, setSubscriptionValue] = useState<number>(0)
-  const [rateValue, setRateValue] = useState<number>(0)
-  const [descriptionValue, setDescriptionValue] = useState<string>('')
+  const [subscriptionValue, setSubscriptionValue] = useState<number>(0);
+  const [rateValue, setRateValue] = useState<number>(0);
+  const [companyValue, setCompanyValue] = useState<string>('');
+  const [descriptionValue, setDescriptionValue] = useState<string>('');
   const [showMessage, setShowMessage] = useState<boolean>(false);
   const [isPolygon, setPolygon] = useState<boolean>(false);
+
+  const isSubmitted = useAppSelector(selectIsSubmitted)
+  const dispatch = useAppDispatch()
+
+  const handleBlankValue = (val: string) => {
+    return val.trim() === '' ? 0 : parseInt(val);
+  }
 
   const getChainId = async () => {
     const walletData = await getWalletData();
@@ -61,7 +65,6 @@ const BondForm = (props: bondData) => {
     if (parseInt(walletData![1], 16) === 80001) {
       setPolygon(true);
     }
-    console.log(isPolygon);
   }
 
   useEffect(() => {
@@ -70,29 +73,31 @@ const BondForm = (props: bondData) => {
 
 
   async function issueBond() {
-    if (subscriptionValue <= 0) {return false;}
-    if (rateValue <= 0) {return false;}
-    if (descriptionValue === '') {return false;}
-    console.log('Creating bond')
-    console.log('The max subscription is: ', subscriptionValue)
-    console.log('The rate is: ', rateValue)
-    console.log('The description is: ', descriptionValue)
+    if (subscriptionValue <= 0) { return false; }
+    if (rateValue <= 0) { return false; }
+    if (descriptionValue === '') { return false; }
     await getChainId();
     if (isPolygon) {
       setPolygon(true);
-      await issueBondHelper(rateValue, subscriptionValue);
+      try {
+        await issueBondHelper(rateValue, subscriptionValue);
+        dispatch(setTrue())
+      } catch (e) {
+        console.log(e)
+      }
+
     } else {
       return false;
     }
   }
 
-  const displayRequiredStatus = (element : JSX.Element, value: Number) => {
+  const displayRequiredStatus = (element: JSX.Element, value: Number) => {
     return value <= 0 && element
   }
 
   return (
     <div>
-      <br/>
+      <br />
       <h3>How much money would you like to raise from your bond?</h3>
       <div>
         <FormControl required={true} className={classes.root}>
@@ -108,12 +113,12 @@ const BondForm = (props: bondData) => {
             className={classes.input}
           />
           {displayRequiredStatus(
-              <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>,
-              subscriptionValue
-            )}
+            <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>,
+            subscriptionValue
+          )}
         </FormControl>
         <span></span>
-        <br/>
+        <br />
       </div>
       <h3>What return rate do you want to give subscribers?</h3>
       <div>
@@ -128,17 +133,40 @@ const BondForm = (props: bondData) => {
             }
             className={classes.input}
           />
-            {displayRequiredStatus(
-              <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>,
-              rateValue
-            )}
-             
-          
+          {displayRequiredStatus(
+            <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>,
+            rateValue
+          )}
+
+
         </FormControl>
         <span></span>
-        <br/>
+        <br />
       </div>
-      <h3>Bond description</h3>
+      <h3>Company</h3>
+      <div>
+        <FormControl required={true} className={classes.root}>
+          <input
+            name="company"
+            id="company"
+            type="text"
+            value={companyValue}
+            onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
+              setCompanyValue(ev.target.value)
+            }
+            className={classes.input}
+          />
+          {
+            companyValue.length < 1 && <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>
+          }
+
+
+
+        </FormControl>
+        <span></span>
+        <br />
+      </div>
+      <h3>Bond Description</h3>
       <div className={classes.lastElement}>
         <FormControl required={true} className={classes.root}>
           <input
@@ -155,31 +183,31 @@ const BondForm = (props: bondData) => {
           {
             descriptionValue.length < 1 && <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>
           }
-          </FormControl>
+        </FormControl>
         <span></span>
-        <input className={classes.submit} onClick={issueBond} type="submit" value="Submit" onMouseEnter={() => setShowMessage(true)} onMouseLeave={() => setShowMessage(false)}/>
+        <input className={classes.submit} onClick={issueBond} type="submit" value="Submit" onMouseEnter={() => setShowMessage(true)} onMouseLeave={() => setShowMessage(false)} />
         {showMessage && (
           <div>
             Upon submitting, your bond will be created.
           </div>
         )}
         {subscriptionValue === 0 && (
-          <div style={{color: 'red'}}>
+          <div style={{ color: 'red' }}>
             Please enter a subscription amount for the bond.
           </div>
         )}
         {rateValue === 0 && (
-          <div style={{color: 'red'}}>
+          <div style={{ color: 'red' }}>
             Please enter a rate for the bond.
           </div>
         )}
         {descriptionValue === '' && (
-          <div style={{color: 'red'}}>
+          <div style={{ color: 'red' }}>
             Please enter a description for the bond.
           </div>
         )}
         {!isPolygon && (
-          <div style={{color: 'red'}}>
+          <div style={{ color: 'red' }}>
             Please connect to Polygon.
           </div>
         )}

@@ -1,30 +1,30 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Slider, Typography, Grid, Input, makeStyles, createStyles, Theme, Button } from '@material-ui/core'
 import { subscribeToBondHelper } from '../helpers/BondFactoryHelper';
 import ApproveButton from './ApprovalButton';
 
-const useStyles = makeStyles((theme: Theme) => 
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-        maxWidth: "75%",
-        margin: "0 auto"
+      maxWidth: "75%",
+      margin: "0 auto"
     },
-    sliderTopbar: {},       
+    sliderTopbar: {},
     sliderHeader: {
-        textAlign: "center",
-        color: "white"
+      textAlign: "center",
+      color: "white"
     },
     sliderBody: {
-        width: "50%",
-        marginLeft: "auto",
-        marginRight: "auto"
+      width: "50%",
+      marginLeft: "auto",
+      marginRight: "auto"
     },
     sliderFooter: {
-        maxWidth: "75%",
-        margin: "0 auto"
+      maxWidth: "75%",
+      margin: "0 auto"
     },
     hide: {
-        visibility: "hidden"
+      visibility: "hidden"
     },
     submit: {
       width: '30%',
@@ -36,8 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: '4px',
       cursor: 'pointer',
       marginTop: '2rem'
-    }  
-  })  
+    }
+  })
 );
 interface subscriptionSlider {
   maxSubscription: number,
@@ -68,7 +68,7 @@ const SubscriptionSlider = (props: subscriptionSlider) => {
     }
   }
 
-  const subscribeToBond = async(bondId: number, amount: number) => {
+  const subscribeToBond = async (bondId: number, amount: number) => {
     await subscribeToBondHelper(bondId, amount!);
   }
 
@@ -79,7 +79,7 @@ const SubscriptionSlider = (props: subscriptionSlider) => {
       <header>
         <Typography id="input-slider" gutterBottom>
           Subscribe to bond.
-        </Typography>      
+        </Typography>
       </header>
       <div className={classes.sliderBody}>
         <Grid container spacing={2} alignItems="center">
@@ -105,7 +105,7 @@ const SubscriptionSlider = (props: subscriptionSlider) => {
             />
           </Grid>
         </Grid>
-        <ApproveButton contractAddress={props.contractAddress!} amount={subscriptionAmount}/>
+        <ApproveButton contractAddress={props.contractAddress!} amount={subscriptionAmount} />
         <Button className={classes.submit} variant='contained' onClick={() => (subscribeToBond(props.bondId!, subscriptionAmount))}>Subscribe</Button>
       </div>
     </div>

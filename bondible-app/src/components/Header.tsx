@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   makeStyles,
   createStyles,
@@ -32,8 +31,8 @@ const useStyles = makeStyles((theme: Theme) =>
       align: 'right !important',
       right: '30px',
       position: 'absolute'
-    }  
-  }) 
+    }
+  })
 )
 
 const MenuAppBar = () => {
@@ -56,15 +55,15 @@ const MenuAppBar = () => {
             className={classes.anchor}
           >
             <img
-              src={Logo} 
+              src={Logo}
               alt="Bondible Logo"
               className={classes.img}
-              />
+            />
           </NavLink>
           <div>
             Address: {address}
           </div>
-          <div style={{paddingLeft: 20}}>
+          <div style={{ paddingLeft: 20 }}>
             Chain Id: {chain}
           </div>
           <IconButton
@@ -73,9 +72,9 @@ const MenuAppBar = () => {
             aria-haspopup="true"
             color="inherit"
             className={classes.icon}
-            onClick={() => {callMetamask()}}
+            onClick={() => { callMetamask() }}
           >
-            <AccountCircle className={classes.icon}/>
+            <AccountCircle className={classes.icon} />
           </IconButton>
         </Toolbar>
       </AppBar>

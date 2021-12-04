@@ -1,5 +1,3 @@
-
-import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { ArrowBack } from '@material-ui/icons';
 import { Link } from "react-router-dom";
@@ -17,13 +15,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const BackButton = () => {
-    const classes = useStyles();
-    return(
-        <Link to="/"><button className={classes.backButton}>
-          <ArrowBack style={{color:"#ffffff"}}/>
-        </button>
-      </Link>
-    )
+  const classes = useStyles();
+  return (
+    <Link to="/"><button className={classes.backButton}>
+      <ArrowBack style={{ color: "#ffffff" }} />
+    </button>
+    </Link>
+  )
 }
 
 export default BackButton;

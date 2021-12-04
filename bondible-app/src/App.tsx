@@ -11,10 +11,10 @@ function App() {
     <>
       <Router>
         <MenuAppBar />
-        <Route exact path="/" component={MainPage}/>
-        <Route exact path="/bondform" component={CreateBond}/>
-        <Route exact path="/browse" component={Catalogue}/>
-        <Route/>
+        <Route exact path="/" component={MainPage} />
+        <Route exact path="/bondform" component={CreateBond} />
+        <Route exact path="/browse" component={Catalogue} />
+        <Route />
       </Router>
     </>
   )

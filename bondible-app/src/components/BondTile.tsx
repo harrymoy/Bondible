@@ -1,28 +1,26 @@
-import React from "react";
-import {Button} from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
 import SubscriptionSlider from "./SubscriptionSlider";
 import { useState } from "react";
 
 
-const useStyles = makeStyles((theme: Theme) => 
-  createStyles({
-    bondTileTopbar: {
-          padding: "20px",
-          paddingTop: "30px",
-          marginLeft: "20px"
-    },
-    bondTileHeader: {
-        padding: "20px",
-        marginLeft: "20px"
-    },
-    bondTileBody: {
-        paddingTop: "10px",
-        textAlign: "center",
-        paddingBottom: "20px",
-        marginLeft: "20px"
-    }
-  })
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        bondTileTopbar: {
+            padding: "20px",
+            paddingTop: "30px",
+            marginLeft: "20px"
+        },
+        bondTileHeader: {
+            padding: "20px",
+            marginLeft: "20px"
+        },
+        bondTileBody: {
+            paddingTop: "10px",
+            textAlign: "center",
+            paddingBottom: "20px",
+            marginLeft: "20px"
+        }
+    })
 );
 interface BondTileProps {
     bondAddress?: string;
@@ -42,7 +40,7 @@ const BondTile = (props: BondTileProps) => {
 
     console.log("Contract address", props.contractAddress!)
 
-    return(
+    return (
         <div>
             <div className={classes.bondTileTopbar}>{props.companyBlurb}</div>
             <header id="bondTileHeader" className={classes.bondTileHeader}>{props.bondDescription}</header>
@@ -50,18 +48,18 @@ const BondTile = (props: BondTileProps) => {
                 <SubscriptionSlider bondId={props.bondId} maxSubscription={props.maxSubscription!} />
                 {shouldShowSubscribe && (
                     <>
-                    {!props.bondAddress ? (
-                        <div className='error'>
-                            <p>Bond not available</p>
-                        </div>
-                    ) : (
-                        <SubscriptionSlider bondId={props.bondId} maxSubscription={props.maxSubscription!} contractAddress={props.contractAddress!} />
-                    )}
+                        {!props.bondAddress ? (
+                            <div className='error'>
+                                <p>Bond not available</p>
+                            </div>
+                        ) : (
+                            <SubscriptionSlider bondId={props.bondId} maxSubscription={props.maxSubscription!} contractAddress={props.contractAddress!} />
+                        )}
                     </>
                 )}
             </div>
             <footer id="footer"></footer>
-        </div>    
+        </div>
     )
 }
 
