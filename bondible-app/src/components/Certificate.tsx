@@ -1,4 +1,7 @@
-import { Page, Text, View, Document, StyleSheet, Canvas } from "@react-pdf/renderer";
+import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import { useEffect } from "react";
+import { useAppSelector } from "../app/hooks";
+import { getBondData } from "../helpers/bondDataSlice";
 
 const styles = StyleSheet.create({
     document: {
@@ -20,21 +23,15 @@ const styles = StyleSheet.create({
     },
 });
 
-interface certificateProps {
-    summary: string
-    description: string
-    bondAmount: number
-    bondRate: number
-}
-
 // Create Document Component
 const Certificate = () => {
+
+    const bondData = useAppSelector(getBondData)
 
     return (
         <div style={styles.document}>
             <Document>
                 <Page size="A4" orientation="landscape" style={styles.page}>
-
                     <View style={styles.section}>
                         <Text>Certification of Bond</Text>
                     </View>

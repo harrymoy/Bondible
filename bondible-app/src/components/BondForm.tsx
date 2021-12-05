@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { selectIsSubmitted, setTrue } from '../helpers/isSubmittedSlice'
+import { useAppDispatch } from '../app/hooks'
+import { setTrue } from '../helpers/isSubmittedSlice'
+import { setBondData } from '../helpers/bondDataSlice'
 import { makeStyles, createStyles, Theme, FormControl, FormHelperText } from '@material-ui/core'
 import { issueBondHelper } from '../helpers/BondFactoryHelper'
 import { getWalletData } from '../helpers/ConnectMetaMask';
@@ -52,7 +53,6 @@ const BondForm = (props: bondData) => {
   const [showMessage, setShowMessage] = useState<boolean>(false);
   const [isPolygon, setPolygon] = useState<boolean>(false);
 
-  const isSubmitted = useAppSelector(selectIsSubmitted)
   const dispatch = useAppDispatch()
 
   const handleBlankValue = (val: string) => {
@@ -71,17 +71,32 @@ const BondForm = (props: bondData) => {
     getChainId()
   }, [isPolygon])
 
+  type BondObject = {
+    amount: number;
+    rate: number;
+    company: string;
+    description: string;
+  }
 
   async function issueBond() {
     if (subscriptionValue <= 0) { return false; }
     if (rateValue <= 0) { return false; }
     if (descriptionValue === '') { return false; }
+
+    const bondDataAction: BondObject = {
+      amount: subscriptionValue,
+      rate: rateValue,
+      company: companyValue,
+      description: descriptionValue
+    }
+
     await getChainId();
     if (isPolygon) {
       setPolygon(true);
       try {
         await issueBondHelper(rateValue, subscriptionValue);
         dispatch(setTrue())
+        dispatch(setBondData(bondDataAction))
       } catch (e) {
         console.log(e)
       }
@@ -137,8 +152,6 @@ const BondForm = (props: bondData) => {
             <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>,
             rateValue
           )}
-
-
         </FormControl>
         <span></span>
         <br />
@@ -159,9 +172,6 @@ const BondForm = (props: bondData) => {
           {
             companyValue.length < 1 && <FormHelperText className={classes.required} id="requiredText">* Required</FormHelperText>
           }
-
-
-
         </FormControl>
         <span></span>
         <br />

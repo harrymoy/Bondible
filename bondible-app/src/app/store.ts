@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import isSubmittedReducer from '../helpers/isSubmittedSlice'
+import bondDataReducer from '../helpers/bondDataSlice'
 
 export const store = configureStore({
   reducer: {
-    isSubmitted: isSubmittedReducer
+    isSubmitted: isSubmittedReducer,
+    bondData: bondDataReducer
   },
 })
 
