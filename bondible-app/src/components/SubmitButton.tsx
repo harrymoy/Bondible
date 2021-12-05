@@ -1,4 +1,8 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import web3StorageHelper from '../helpers/Web3StorageHelper';
+import { useAppSelector } from '../app/hooks';
+import { getBondData } from '../helpers/bondDataSlice';
+import Certificate from './Certificate';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -19,9 +23,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const SubmitButton = () => {
+    const bondDetails = useAppSelector(getBondData)
     const classes = useStyles();
     return (
-        <button className={classes.submit}>Upload Certificate to Filecoin</button>
+        <button onClick={() => web3StorageHelper(bondDetails.company, <Certificate />)} className={classes.submit}>Upload Certificate to Filecoin</button>
     )
 }
 

@@ -3,6 +3,7 @@ import type { RootState } from '../app/store'
 
 // Define a type for the slice state
 export interface bondDataState {
+  id: number;
   amount: number;
   rate: number;
   company: string;
@@ -11,6 +12,7 @@ export interface bondDataState {
 
 // Define the initial state using that type
 const initialState: bondDataState = {
+  id: 0,
   amount: 0,
   rate: 0,
   company: "",
@@ -22,6 +24,7 @@ export const bondDataSlice = createSlice({
   initialState,
   reducers: {
     setBondData: (state, action) => {
+      state.id = action.payload.id
       state.amount = action.payload.amount
       state.company = action.payload.company
       state.description = action.payload.description

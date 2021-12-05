@@ -50,6 +50,7 @@ const BondForm = (props: bondData) => {
   const [rateValue, setRateValue] = useState<number>(0);
   const [companyValue, setCompanyValue] = useState<string>('');
   const [descriptionValue, setDescriptionValue] = useState<string>('');
+  const [bondId, setBondId] = useState<number>(0);
   const [showMessage, setShowMessage] = useState<boolean>(false);
   const [isPolygon, setPolygon] = useState<boolean>(false);
 
@@ -72,6 +73,7 @@ const BondForm = (props: bondData) => {
   }, [isPolygon])
 
   type BondObject = {
+    id: number;
     amount: number;
     rate: number;
     company: string;
@@ -84,6 +86,7 @@ const BondForm = (props: bondData) => {
     if (descriptionValue === '') { return false; }
 
     const bondDataAction: BondObject = {
+      id: bondId,
       amount: subscriptionValue,
       rate: rateValue,
       company: companyValue,
@@ -94,7 +97,7 @@ const BondForm = (props: bondData) => {
     if (isPolygon) {
       setPolygon(true);
       try {
-        await issueBondHelper(rateValue, subscriptionValue);
+        const bondReturn = await issueBondHelper(rateValue, subscriptionValue);
         dispatch(setTrue())
         dispatch(setBondData(bondDataAction))
       } catch (e) {

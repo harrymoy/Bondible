@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import BackButton from '../components/BackButton';
 import Certificate from '../components/Certificate';
 import { selectIsSubmitted } from '../helpers/isSubmittedSlice';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import SubmitButton from '../components/SubmitButton';
 
 const useStyles = makeStyles((theme: Theme) =>
