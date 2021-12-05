@@ -3,6 +3,7 @@ pragma solidity ^0.8.10;
 
 import { IERC20 } from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import {BondWallet} from './BondWallet.sol';
+import {BondCertificate} from './BondCertificate.sol';
 
 struct Subscriber {
         address payable subscriber;
@@ -22,6 +23,7 @@ contract BondFactory {
     mapping (uint => address) private bonds;
     mapping (uint => mapping(address => Subscriber)) private subscribers;
     IERC20 private paymentToken;
+    BondCertificate public bondCertificate;
     
     event IssueBond (uint _bondId);
     event SubscribedToBond(address _bond, address _subscriber, uint _subscriptionValue);
@@ -33,6 +35,7 @@ contract BondFactory {
     //Instantiate the contract with the Dai token address.
     constructor(address _tokenAddress) {
         paymentToken = IERC20(_tokenAddress);
+        bondCertificate = new BondCertificate();
     }
 
                                                         ///////////////////////////////////// Function Calls /////////////////////////////////////
@@ -47,8 +50,16 @@ contract BondFactory {
         bonds[bondCount] = address(bond);
         uint bondId = bondCount;
         emit IssueBond(bondId);
+        bondCertificate.createBondCertificate(msg.sender, bondId);
         bondCount++;
         return (address(bond), bondId);
+    }
+
+    function saveCertificate(uint _bondId, string memory _tokenUri) public
+        returns (bool)
+    {
+        bondCertificate.saveCertificate(_tokenUri, _bondId);
+        return true;
     }
 
     /**
@@ -65,7 +76,9 @@ contract BondFactory {
         @param _bondId: The Id for a specific bond.
         @param _subscriptionAmount: The amount they want to subscribe with.
      */    
-    function subscribeToBond(uint _bondId, uint _subscriptionAmount) public payable {
+    function subscribeToBond(uint _bondId, uint _subscriptionAmount) public 
+        payable
+    {
         BondWallet selectedBond = BondWallet(bonds[_bondId]);
         uint bondCurrentBalance = selectedBond.getBalance();
         uint bondMaxSubscription = selectedBond.maxSubscription();
